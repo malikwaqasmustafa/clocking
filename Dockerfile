@@ -2,7 +2,7 @@ FROM ubuntu:22.04
 
 LABEL maintainer="Taylor Otwell"
 
-ARG WWWGROUP
+ARG WWWGROUP=1000
 ARG NODE_VERSION=16
 ARG POSTGRES_VERSION=14
 
@@ -58,6 +58,8 @@ COPY start-container /usr/local/bin/start-container
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY php.ini /etc/php/8.1/cli/conf.d/99-sail.ini
 RUN chmod +x /usr/local/bin/start-container
+RUN chmod -R o+w storage
+RUN chmod -R o+w bootstrap
 
 EXPOSE 8000
 
