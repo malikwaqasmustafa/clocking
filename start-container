@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+cd /var/vh/holding;
+git pull;
+
 if [ ! -z "$WWWUSER" ]; then
     usermod -u $WWWUSER sail
 fi
