@@ -1,0 +1,125 @@
+@import "config";
+body {
+    overflow: auto;
+    overflow-x: hidden;
+    padding-bottom: 20px
+}
+.login {
+    article {
+        form {
+            max-width: 300px;
+        }
+    }
+}
+.loginCopy {
+    min-width: 300px;
+    text-align: center;
+}
+.alerts {
+    width: 100%;
+    max-width: 270px;
+    .handle2 {
+        top: auto;
+        bottom: 0;
+    }
+}
+
+header {
+    height: auto;
+    margin-bottom: 15px;
+    .logo {
+        float: none;
+        width: auto;
+    }
+    .headerNav {
+        display: none;
+    }
+    section {
+        height: auto;
+        width: 100%;
+        .gSeachIcon {
+            display: none;
+        }
+    }
+    .archive {
+        display: block;
+        float: none !important;
+        margin: 0;
+        label {
+            width: 100%;
+            height: 40px;
+            font-size: 12px;
+            .front-face, .back-face {
+                line-height: 40px
+            }
+        }
+    }
+}
+.sideNav {
+    @include shift(-100%,0);
+    .handle {
+        top: 10px;
+        img.svg, svg {
+            @include rotate(180deg);
+        }
+        &.open {
+            img.svg, svg {
+                @include rotate(0deg);
+            }
+        }
+    }
+    &.closed {
+        @include shift(0,0);
+    }
+}
+.dashboard {
+    right: 0;
+    bottom: 0;
+    left: 0;
+    position: relative;
+    z-index: 5;
+    top: 0;
+    padding: 0 15px;
+    .user {
+        height: auto;
+        padding-bottom: 0;
+        ul {
+            float: none !important;
+            li:nth-child(3), li:nth-child(4) {
+                display: none;
+            }
+        }
+    }
+    .toDo {
+        font-size: 12px;
+        display: block;
+    }
+    .lastLog {
+        float: none !important;
+        display: block;
+        margin-bottom: 10px;
+    }
+    .quickLinks {
+        li {
+            width: 33.33333333333333%;
+            margin-bottom: 10px;
+        }
+    }
+    .chartGraphs {
+        &.toDoList {
+            &.dBsList {
+                height: 194px;
+                position: relative;
+                width: 100%;
+                margin-bottom: 0;
+            }
+        }
+        &.commBook {
+            &.dBs {
+                position: relative;
+                height: 194px;
+                width: 100%;
+            }
+        }
+    }
+}

@@ -1,0 +1,21 @@
+@import 'https://code.highcharts.com/css/highcharts.css';
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-size: medium;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+section {
+    background-color: #57571b;
+    height: 100vh;
+    width:100%;
+}
+
+.container-overdue {
+    right: 15px;
+    bottom:15px;
+}

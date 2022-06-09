@@ -1,0 +1,892 @@
+@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@300;400&family=Ubuntu+Condensed&family=Ubuntu:wght@300;400;500;700&display=swap");
+* {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.clearfix:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.hidden {
+    display: none;
+}
+
+html,
+body {
+    margin: 0;
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 16px;
+    height: 100vh;
+    line-height: 1.1;
+    color: #27404D;
+    overflow: hidden;
+}
+
+html.light .background img,
+body.light .background img {
+    opacity: 0.05;
+}
+
+.toggle {
+    float: left;
+    height: 36px;
+    width: 36px;
+    padding: 6px 0;
+    margin-right: 30px;
+}
+
+.toggle label {
+    position: relative;
+    display: block;
+    height: 100%;
+    border-radius: 12px;
+    background-color: #a1adb0;
+    -webkit-transition: background-color 300ms ease;
+    transition: background-color 300ms ease;
+    cursor: pointer;
+}
+
+.toggle label:before {
+    display: block;
+    height: 18px;
+    width: 18px;
+    background-color: #FFF;
+    border-radius: 9px;
+    position: absolute;
+    content: '';
+    left: 3px;
+    top: 3px;
+    -webkit-transition: left 300ms ease;
+    transition: left 300ms ease;
+}
+
+.toggle input[type="checkbox"]:checked + label {
+    background-color: #3DA492;
+}
+
+.toggle input[type="checkbox"]:checked + label:before {
+    left: 15px;
+}
+
+ul,
+li {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+a,
+a:link,
+a:visited,
+a:active {
+    text-decoration: none;
+}
+
+.login {
+    height: 100%;
+    background-image: url("../images/loginPage-background.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: 50%;
+    position: relative;
+}
+
+.login .logo {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translate(calc(-100% - 75px), -50%);
+    transform: translate(calc(-100% - 75px), -50%);
+}
+
+@media screen and (max-width: 1024px) {
+    .login .logo {
+        position: relative;
+        left: auto;
+        top: auto;
+        -webkit-transform: translate(0, 0);
+        transform: translate(0, 0);
+        margin: 0 auto;
+        display: block;
+        width: 240px;
+        padding: 50px 0;
+    }
+}
+
+.login .loginSection {
+    background-color: rgba(221, 221, 221, 0.9);
+    max-height: 530px;
+    width: 90%;
+    max-width: 380px;
+    -webkit-box-shadow: -2.5px 4.33px 10px 0px rgba(0, 0, 0, 0.2);
+    box-shadow: -2.5px 4.33px 10px 0px rgba(0, 0, 0, 0.2);
+    position: absolute;
+    padding: 30px;
+}
+
+@media screen and (max-width: 1024px) {
+    .login .loginSection {
+        left: 50%;
+        top: 50%;
+        -webkit-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+    }
+}
+
+@media screen and (min-width: 1024px) {
+    .login .loginSection {
+        right: 100px;
+        top: 50%;
+        -webkit-transform: translate(0, -50%);
+        transform: translate(0, -50%);
+    }
+}
+
+.login .loginSection .title {
+    font-family: "Oswald", sans-serif;
+    font-size: 24px;
+    display: block;
+    padding-top: 20px;
+    margin-bottom: 5px;
+}
+
+.login .loginSection form {
+    margin-bottom: 30px;
+    padding-top: 40px;
+}
+
+.login .loginSection form .form-group {
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.login .loginSection form .form-group > label {
+    font-size: 0.857em;
+    font-family: "Ubuntu Condensed", sans-serif;
+    color: #999;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.login .loginSection form .form-group input[type="text"],
+.login .loginSection form .form-group input[type="password"],
+.login .loginSection form .form-group select {
+    width: 100%;
+    color: #666;
+    background-color: #CCC;
+    border: 0;
+    height: 36px;
+    padding: 0 12px;
+}
+
+.login .loginSection form .form-group input[type="text"].disabled,
+.login .loginSection form .form-group input[type="password"].disabled,
+.login .loginSection form .form-group select.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.login .loginSection form .form-group .select {
+    position: relative;
+    background-color: #CCC;
+    z-index: 1;
+}
+
+.login .loginSection form .form-group .select select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border: 0;
+    width: 100%;
+    padding-right: 36px;
+}
+
+.login .loginSection form .form-group .select:before {
+    content: "";
+    width: 10px;
+    height: 10px;
+    display: block;
+    background-image: url("../images/login-form-arrow.gif");
+    background-position: 50%;
+    background-size: 10px;
+    position: absolute;
+    right: 13px;
+    bottom: 13px;
+    pointer-events: none;
+}
+
+.login .loginSection form .form-group .select.pullLeft {
+    padding-left: 56px;
+    float: left;
+}
+
+.login .loginSection form .form-group .checkbox {
+    position: absolute;
+    left: 10px;
+    z-index: 2;
+}
+
+.login .loginSection form .form-group small {
+    display: block;
+    padding: 2px 0;
+    font-size: 10px;
+    font-family: "Ubuntu Condensed", sans-serif;
+    text-transform: uppercase;
+}
+
+.login .loginSection form .division .form-group {
+    width: calc(50% - 5px);
+    margin-left: 10px;
+    float: left;
+}
+
+.login .loginSection form .division .form-group:first-of-type {
+    margin-left: 0;
+}
+
+.login .loginSection form button {
+    border: 0;
+    background-color: #27404D;
+    margin-top: 10px;
+    height: 36px;
+    padding: 0 20px;
+    color: #FFF;
+    font-size: 12px;
+    font-family: "Ubuntu Condensed", sans-serif;
+    text-transform: uppercase;
+}
+
+.login .loginSection .error {
+    font-size: 0.857em;
+    color: #C21807;
+    margin-bottom: 30px;
+    display: block;
+}
+
+.login .loginSection .copy {
+    font-size: 0.857em;
+    color: #666;
+    font-family: "Ubuntu Condensed", sans-serif;
+    margin: 0;
+}
+
+.background {
+    background-color: #CAD4D6;
+    height: 100vh;
+    position: relative;
+    z-index: 1;
+}
+
+.background img {
+    position: absolute;
+    right: 50px;
+    top: 0;
+    height: 100%;
+    opacity: 0.2;
+}
+
+.leftNav {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100vh;
+    width: 60px;
+    background-color: #1f262a;
+    z-index: 10;
+}
+
+.leftNav.expand {
+    width: 230px;
+}
+
+.leftNav.expand .menuPin {
+    display: block;
+}
+
+.leftNav.expand .nav:before {
+    position: absolute;
+    top: -30px;
+    color: #a1adb0;
+    font-family: "Oswald", sans-serif;
+    font-weight: 300;
+    letter-spacing: 7px;
+    text-transform: uppercase;
+    content: 'care';
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+}
+
+.leftNav.expand .nav li a.hasChild {
+    background-image: url("../images/leftNav-arrow.png");
+}
+
+.leftNav.expand .nav li:hover ul {
+    left: 230px;
+    opacity: 1;
+    visibility: visible;
+}
+
+.leftNav .ss-container {
+    height: calc(100% - 90px);
+}
+
+.leftNav .ss-container .ss-scroll {
+    right: auto !important;
+    left: 0;
+}
+
+.leftNav .expansionBtn {
+    display: block;
+    height: 60px;
+    width: 60px;
+    background-image: url(../images/leftMenu-expansionIcon.png);
+    background-repeat: no-repeat;
+    background-size: 24px;
+    background-position: center center;
+    position: relative;
+    margin-bottom: 30px;
+    cursor: pointer;
+}
+
+.leftNav .expansionBtn img {
+    position: absolute;
+    right: 12px;
+    top: 14px;
+    height: 5px;
+    width: 5px;
+}
+
+.leftNav .expansionBtn.change img {
+    -webkit-transform: rotate(180deg);
+    transform: rotate(180deg);
+}
+
+.leftNav .menuPin {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    font-size: 10px;
+    text-transform: uppercase;
+    color: #a1adb0;
+    text-align: right;
+    height: 24px;
+    padding-right: 29px;
+    display: none;
+    width: 70px;
+    background-image: url("../images/stickMenu-icon.png");
+    background-position: right 0;
+    background-repeat: no-repeat;
+    cursor: pointer;
+}
+
+.leftNav .menuPin.stick {
+    background-position: right -24px;
+}
+
+.leftNav .nav {
+    width: 100%;
+    height: calc(100% - 90px);
+    position: relative;
+}
+
+.leftNav .nav li {
+    width: 100%;
+    height: 46px;
+}
+
+.leftNav .nav li a {
+    display: block;
+    height: 46px;
+    position: relative;
+    padding: 0 0 0 60px;
+    line-height: 46px;
+    width: 100%;
+    overflow: hidden;
+    color: #cad4d6;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 14px;
+}
+
+.leftNav .nav li a img {
+    position: absolute;
+    height: 24px;
+    width: 24px;
+    left: 18px;
+    top: 11px;
+}
+
+.leftNav .nav li a.active {
+    background-color: #ffcd60;
+    color: #27404D;
+}
+
+.leftNav .nav li a.hasChild {
+    background-repeat: no-repeat;
+    background-size: 8px;
+    background-position: right 15px center;
+}
+
+.leftNav .nav li:hover > a {
+    background-color: #4a4953;
+}
+
+.leftNav .nav li:hover .secLevel {
+    left: 60px;
+    opacity: 1;
+    visibility: visible;
+}
+
+.leftNav .nav li:hover .secLevel li:hover a {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.leftNav .nav li .secLevel {
+    width: 250px;
+    position: fixed;
+    left: 0;
+    height: 100%;
+    top: 0;
+    background-color: #4a4953;
+    opacity: 0;
+    visibility: hidden;
+    z-index: 10;
+}
+
+.leftNav .nav li .secLevel li.thirdLevel {
+    background-color: #62616e;
+    height: auto;
+}
+
+.leftNav .nav li .secLevel li.thirdLevel:hover a {
+    background-color: #62616e;
+}
+
+.leftNav .nav li .secLevel li.thirdLevel ul {
+    background-color: #62616e;
+}
+
+.leftNav .nav li .secLevel li.thirdLevel ul li:hover a {
+    background-color: #7b7989;
+}
+
+.leftNav .nav li .secLevel.slide {
+    left: 230px;
+}
+
+.topBar {
+    position: absolute;
+    left: 0px;
+    top: 0;
+    height: 50px;
+    right: 0;
+    background-color: rgba(255, 255, 255, 0.2);
+    z-index: 9;
+}
+
+.topBar.shrink {
+    left: 230px;
+}
+
+.topBar .logo {
+    float: left;
+    height: 50px;
+    width: 50px;
+    padding: 5px 0 5px 15px;
+}
+
+.topBar .logo img {
+    height: 40px;
+    width: 40px;
+}
+
+.topBar .dateLastlogin {
+    float: left;
+    height: 50px;
+    padding: 15px;
+    line-height: 20px;
+    font-size: 0.75em;
+    color: #74818c;
+}
+
+.topBar .dateLastlogin i {
+    font-style: normal;
+    display: inline-block;
+    padding-left: 20px;
+    position: relative;
+}
+
+.topBar .dateLastlogin i:before {
+    position: absolute;
+    content: '';
+    height: 100%;
+    width: 1px;
+    background-color: #a1adb0;
+    left: 8px;
+    top: 0;
+}
+
+.topBar .rightSide {
+    float: right;
+    height: 50px;
+    padding: 10px 0 10px 15px;
+}
+
+.topBar .rightSide .cta {
+    float: left;
+    height: 30px;
+    line-height: 30px;
+    font-size: 0.875em;
+    color: #FFF;
+    text-transform: uppercase;
+    padding: 0 15px;
+    font-family: "Ubuntu Condensed", sans-serif;
+    background-color: #74818c;
+    margin-left: 20px;
+}
+
+.topBar .rightSide .cta:first-of-type {
+    margin: 0;
+}
+
+.topBar .rightSide .cta.blue {
+    background-color: #4278a6;
+}
+
+.topBar .rightSide > ul {
+    height: 30px;
+    padding: 5px 0 5px 15px;
+    float: left;
+}
+
+.topBar .rightSide > ul li {
+    float: left;
+    height: 20px;
+}
+
+.topBar .rightSide > ul li a {
+    display: block;
+    line-height: 20px;
+    padding: 0 15px;
+    position: relative;
+    font-size: 0.875em;
+    color: #27404D;
+}
+
+.topBar .rightSide > ul li a span {
+    float: right;
+    line-height: 14px;
+    height: 16px;
+    margin: 2px 0 2px 5px;
+    font-size: 12px;
+    font-family: "Ubuntu Condensed", sans-serif;
+    color: #FFF;
+    background-color: #C21807;
+    border-radius: 8px;
+    padding: 0 5px;
+}
+
+.topBar .rightSide .mainNav {
+    float: left;
+    position: relative;
+}
+
+.topBar .rightSide .mainNav > span {
+    height: 50px;
+    display: block;
+    padding: 13px 35px 13px 3px;
+    background-image: url(../images/mainMenu-icon.png);
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 24px;
+    text-align: right;
+    font-size: 12px;
+    color: #74818c;
+    width: 70px;
+    line-height: 0.9;
+    font-family: "Ubuntu Condensed", sans-serif;
+    cursor: pointer;
+    margin: -10px 0;
+}
+
+.topBar .rightSide .mainNav article {
+    background-color: rgba(88, 94, 96, 0.949);
+    position: fixed;
+    right: 0;
+    top: 50px;
+    height: calc(100% - 50px);
+    padding: 15px;
+    width: 675px;
+    opacity: 0;
+    visibility: hidden;
+}
+
+.topBar .rightSide .mainNav article .profile {
+    font-size: 16px;
+    font-family: "Ubuntu", sans-seri;
+    margin-bottom: 50px;
+}
+
+.topBar .rightSide .mainNav article .profile img {
+    float: right;
+    height: 100px;
+    width: 100px;
+    margin-left: 20px;
+}
+
+.topBar .rightSide .mainNav article .profile .name {
+    font-size: 0.875em;
+    color: #FFF;
+    line-height: 28px;
+    width: calc(100% - 120px);
+    float: left;
+}
+
+.topBar .rightSide .mainNav article .profile .desig {
+    color: #ffcd60;
+    font-size: 0.75em;
+    text-transform: uppercase;
+    font-family: "Ubuntu Condensed", sans-serif;
+    margin-bottom: 20px;
+    float: left;
+    width: calc(100% - 120px);
+}
+
+.topBar .rightSide .mainNav article .profile .btn {
+    display: inline-block;
+    color: #FFF;
+    padding: 0 15px;
+    line-height: 28px;
+    font-size: 0.75em;
+    font-family: "Ubuntu Condensed", sans-serif;
+    text-transform: uppercase;
+}
+
+.topBar .rightSide .mainNav article .profile .btn.blue {
+    background-color: #4278a6;
+}
+
+.topBar .rightSide .mainNav article .scroll {
+    height: calc(100% - 150px);
+}
+
+.topBar .rightSide .mainNav article .nav {
+    font-size: 14px;
+    text-align: left;
+    height: 100vw;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+}
+
+.topBar .rightSide .mainNav article .nav > li {
+    margin-bottom: 25px;
+}
+
+.topBar .rightSide .mainNav article .nav > li .title {
+    display: block;
+    color: #ffcd60;
+    font-family: "Oswald", sans-serif;
+    font-size: 1.428em;
+    margin-bottom: 15px;
+}
+
+.topBar .rightSide .mainNav article .nav > li > ul > li a,
+.topBar .rightSide .mainNav article .nav > li > ul > li span {
+    display: block;
+    color: #FFF;
+    line-height: 1.714em;
+}
+
+.topBar .rightSide .mainNav article .nav > li > ul > li ul {
+    display: none;
+}
+
+.topBar .rightSide .mainNav:hover > span {
+    background-color: rgba(88, 94, 96, 0.949);
+    color: #DDD;
+}
+
+.topBar .rightSide .mainNav:hover article {
+    opacity: 1;
+    visibility: visible;
+}
+
+.mainMenu {
+    height: 40px;
+    background-color: rgba(61, 164, 146, 0.8);
+    position: absolute;
+    left: 0;
+    top: 50px;
+    z-index: 9;
+    right: 0;
+    padding: 0 15px 0 5px;
+}
+
+.mainMenu.shrink {
+    left: 230px;
+}
+
+.mainMenu > ul {
+    height: 40px;
+    float: left;
+}
+
+.mainMenu > ul > li {
+    float: left;
+    height: 40px;
+    position: relative;
+}
+
+.mainMenu > ul > li > span, .mainMenu > ul > li > a {
+    height: 40px;
+    padding: 0 8px;
+    color: #FFF;
+    font-family: "Oswald", sans-serif;
+    font-size: 12px;
+    text-transform: uppercase;
+    display: block;
+    cursor: pointer;
+    position: relative;
+    z-index: 2;
+    line-height: 40px;
+    font-weight: 300;
+}
+
+.mainMenu > ul > li > div {
+    position: absolute;
+    background-color: #FFF;
+    padding: 5px 10px 0 10px;
+    -webkit-box-shadow: 1.147px 1.638px 4px 0px rgba(31, 38, 42, 0.4);
+    box-shadow: 1.147px 1.638px 4px 0px rgba(31, 38, 42, 0.4);
+    width: 420px;
+    z-index: 1;
+    display: none;
+}
+
+.mainMenu > ul > li > div > ul {
+    width: 100%;
+}
+
+.mainMenu > ul > li > div > ul > li {
+    float: left;
+    width: calc(calc(100% - 15px) / 2);
+}
+
+.mainMenu > ul > li > div > ul > li:nth-child(even) {
+    margin-left: 15px;
+}
+
+.mainMenu > ul > li > div > ul > li a, .mainMenu > ul > li > div > ul > li span {
+    display: block;
+    line-height: 22px;
+    font-size: 12px;
+    color: #74818c;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+}
+
+.mainMenu > ul > li > div > ul > li a:hover {
+    color: #27404D;
+}
+
+.mainMenu > ul > li > div > ul > li span {
+    background-color: #b9b9b9;
+    padding: 0 5px;
+    color: #FFF;
+}
+
+.mainMenu > ul > li > div > ul > li ul li a {
+    padding-left: 15px;
+    background-image: url("../images/mainNav-levelArrow.png");
+    background-position: left center;
+    background-repeat: no-repeat;
+    background-size: 11px 24px;
+}
+
+.mainMenu > ul > li > div > ul > li ul li:last-child a {
+    background-image: url("../images/mainNav-levelArrowLast.png");
+}
+
+.mainMenu > ul > li:hover > span {
+    background-color: #FFF;
+    color: #27404D;
+}
+
+.mainMenu > ul > li:hover div {
+    display: block;
+}
+
+.mainMenu .profile {
+    float: right;
+    height: 40px;
+}
+
+.mainMenu .profile .director {
+    float: left;
+    height: 40px;
+    padding: 5px 0;
+    margin-left: 10px;
+}
+
+.mainMenu .profile .director i {
+    font-style: normal;
+    height: 30px;
+    background-color: #00bff3;
+    color: #27404D;
+    font-size: 12px;
+    font-family: "Oswald", sans-serif;
+    padding: 2px 5px;
+    display: block;
+    text-align: right;
+}
+
+.mainMenu .profile article {
+    height: 40px;
+    float: left;
+    color: #FFF;
+    font-size: 14px;
+    text-align: right;
+    padding: 5px 45px 0 0;
+    margin-left: 10px;
+    position: relative;
+}
+
+.mainMenu .profile article img {
+    position: absolute;
+    height: 40px;
+    width: 40px;
+    right: 0;
+    top: 0;
+}
+
+.mainMenu .profile article span {
+    display: block;
+    font-size: 12px;
+    font-family: "Ubuntu Condensed", sans-serif;
+    color: #cad4d6;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.mainMenu .profile .logout {
+    float: left;
+    height: 40px;
+    width: 40px;
+    background-image: url("../images/logout-icon.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 28px;
+}

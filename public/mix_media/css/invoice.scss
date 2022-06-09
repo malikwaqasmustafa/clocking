@@ -1,0 +1,901 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto+Condensed:400,700|Roboto:300,400,700');
+$secondaryFont: 'Roboto Condensed', sans-serif;
+$primaryColor: #3DA492;
+$secondaryColor: #648DAC;
+$orangeColor: #F8931D;
+$grayColor: #ACB6B6;
+@mixin shift($x, $y) {
+    -moz-transform: translateX($x) translateY($y);
+    -webkit-transform: translateX($x) translateY($y);
+    -o-transform: translateX($x) translateY($y);
+    -ms-transform: translateX($x) translateY($y);
+    transform: translateX($x) translateY($y);
+}
+@mixin rotate($deg) {
+    -webkit-transform:rotate($deg);
+    -moz-transform:rotate($deg);
+    -o-transform: rotate($deg);
+    -ms-transform:rotate($deg);
+    transform: rotate($deg);
+}
+@media print{
+body {
+    font-family: 'Roboto', sans-serif;
+    color: #666;
+    margin: 0;
+	overflow: auto !important;
+}
+
+* {
+    -webkit-print-color-adjust: exact;
+}
+.invoicePrintBody{
+	background: #ffffff !important;
+	.table > tbody > tr > td:first-child{
+    	border-left: none !important;
+	}
+	.table > tbody > tr > td:last-child{
+    	border-right: none !important;
+	}
+	.table > tbody > tr:last-of-type > td{
+    	border-bottom: none !important;
+	}
+}
+.table {
+	thead{
+		tr{
+			th{
+				background-color: $secondaryColor !important;
+				color: #fff !important;
+				font-size: 9px !important;
+			}
+		}
+	}
+	tbody{
+		tr{
+			td{
+				font-size: 9px !important;
+			}
+		}
+	}
+}
+.invoiceTopBar{
+	position: relative;
+	.table {
+		margin: 0;
+		thead{
+			tr{
+				th{
+					padding: 0;
+				}
+			}
+		}
+		tbody{
+			tr{
+				td{
+					padding: 0;
+					border: none;
+					&.invoiceTitle{
+						table{
+							width: 100%;
+							td{
+								text-align: center;
+								color: #FFF !important;
+								font-size: 28px;
+								text-transform: uppercase;
+								&:first-child{
+									text-align: right;
+									width: 81px;
+									background-color: none;
+								}
+							}
+						}
+					}
+					.ownInfo {
+						margin: 0;
+						padding: 30px 0 0 10px;
+						li {
+							height: 32px;
+							width: 350px;
+							border-radius: 16px;
+							border: 1px solid $grayColor;
+							position: relative;
+							padding: 5px 0 5px 28px;
+							margin-bottom: 10px;
+							font-size: 15px;
+							img{
+								height: 32px;
+								width: 32px;
+								position: absolute;
+								left: -10px;
+								top: 0;
+							}
+							span {
+								
+								height: 32px;
+								width: 32px;
+								background-color: $orangeColor;
+								border-radius: 16px;
+								left: -10px;
+								top: 0;
+								img {
+									height: 32px;
+									width: 32px;
+									padding: 9px;
+								}
+							}
+						}
+						&.PayeePrintOther{
+							li {
+								height: auto;
+								border: none;
+							}
+						}
+					}
+					.invoicee {
+						text-align: right;
+						position: relative;
+						padding-top: 22px;
+						img {
+							display: block;
+							float: right;
+							margin-bottom: 20px;
+						}
+						p {
+							span {
+								color: #999;
+							}
+						}
+					}
+					 .invoiceInfo {
+						float: left;
+						border-left: solid 1px #ACB6B6;
+						padding: 10px 15px 0px 15px;
+						margin-left: 15px;
+						p {
+							strong {
+								font-size: 12px;
+								color: $secondaryColor;
+								display: block;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
+.invoiceHeader {
+    position: relative;
+    .invoiceTitle {
+        height: 60px;
+        background: $primaryColor !important;
+        padding: 10px 20px;
+        color: #FFF;
+        font-size: 28px;
+        text-align: center;
+        text-transform: uppercase;
+        &:before {
+            position: absolute;
+            right: 100%;
+            top: 0;
+            background-image: url('../images/invoiceTitleBG.png');
+            height: 60px;
+            width: 81px;
+            background-size: auto 60px;
+            content: '';
+            margin-right: -30px;
+        }
+    }
+    .table {
+        border: 1px solid $grayColor;
+        thead {
+            tr {
+                th {
+                    background-color: $grayColor;
+                    padding: 5px 30px;
+                    color: #FFF;
+                    font-size: 11pt;
+                    width: 150px;
+                    border: 0;
+                    text-align: right;
+					text-transform: none !important;
+                    &:first-child {
+                        width: auto;
+                        text-align: left
+                    }
+                }
+            }
+        }
+        tbody {
+            tr {
+                td {
+                    border-left: 1px solid $grayColor;
+                    text-align: right;
+                    font-size: 10pt;
+                    font-family: $secondaryFont;
+                    &:first-child {
+                        text-align: left;
+                    }
+                    &:last-child {
+                        font-weight: 700;
+                    }
+                }
+            }
+        }
+        & + .table {
+            border: 0;
+            tbody {
+                tr {
+                    td {
+                        border: 0;
+                        width: 150px;
+                        font-size: 10pt;
+                        font-family: $secondaryFont;
+                        font-weight: 700;
+                        &:first-child {
+                            text-align: right;
+                            width: auto;
+                            font-weight: 400;
+                        }
+                    }
+                    &:last-child {
+                        td {
+                            background-color: $secondaryColor !important;
+                            font-weight: 700;
+                            color: #FFF !important;
+                            font-size: 12pt;
+                        }
+                    }
+                }
+            }
+        }
+    }
+	&.accountInvoice{
+		.table {
+			thead {
+            tr {
+                th {
+					padding: 5px 8px;					
+					&:nth-child(2){
+                        width: 140px;
+                    }
+					&:nth-child(3){
+                        width: 130px;
+                    }
+                    &:last-child{
+                        width: 110px;
+                    }
+                }
+            }
+        }
+		}
+	}
+	.BalShtHistoryPrint{
+		border: 1px solid $grayColor !important;
+		thead{
+			tr{
+				&:first-child{
+					th{
+						background-color: #ACB6B6;
+						text-align: center;
+						-webkit-print-color-adjust: exact; 
+						border-bottom: solid 1px #ACB6B6;
+						border-right: solid 1px #ddd;
+						&:last-child{
+							border-right: solid 1px #ACB6B6;
+						}
+					}
+				}
+				&:nth-child(2){
+					th{
+						text-align: left;
+						background-color: #ccc !important;
+						-webkit-print-color-adjust: exact; 
+						border-bottom: solid 1px #ccc;
+						border-right: solid 1px #ddd;
+						&:last-child{
+							border-right: solid 1px #ACB6B6;
+						}
+					}	
+				}
+				th{
+					font-weight: normal;
+					font-size: 9pt;
+				}
+			}
+		}
+		tbody {
+            tr {
+                td {
+                    border-left: 1px solid $grayColor !important;
+                    text-align: left !important;
+                    font-size: 8pt !important;
+                    font-family: $secondaryFont;
+					font-weight: normal !important;
+					width: auto !important;
+                    &:first-child {
+						width: 250px !important;
+                    }
+					&:nth-child(2) {
+						width: 250px !important;
+                    }
+                    &:last-child {
+                        font-weight: 700 !important;
+						width: 100px !important;
+                    }
+					&:nth-last-child(-n+3){
+						text-align: right;
+					}
+                }
+				&:last-child{
+					td {
+						text-align: right !important;
+						font-weight: bold !important;
+						&:nth-child(n+2){
+							border-color: #fff !important;
+						}
+						
+					}
+				}
+            }
+        }
+	}
+}
+.InvoiceFooter{
+	float: left;
+	text-align: left;
+	li{
+		display: inline-block;
+		margin-right: 20px;
+		small{
+			display: block;
+			color: #999;
+		}
+		&:last-child{
+			margin-right: 0;
+		}
+	}
+}
+	
+	.EmarPrint{
+		.marSheetListing{
+			> li{
+				padding: 0 !important;
+				font-size: 9px !important;
+				.view{
+					padding: 5px 5px 5px 15px;
+					font-size: 10px;
+					> span{
+						top: 6px;
+						svg{
+							width: 12px;
+							height: 12px;
+						}
+					}
+					.marSheetAct{
+						padding: 3px 5px !important;
+						font-size: 12px !important;
+					}
+				}
+				.table{
+					thead{
+						> tr{
+							&:first-of-type{
+								> th{
+									background: #9eaaaa !important;
+									color: #fff !important;
+									font-size: 9px;
+									&:first-of-type{
+										background: none !important;
+									}
+									&:nth-of-type(even){
+										background-color: #ACB6B6 !important;
+									}
+								}
+							}
+							&:nth-of-type(2){
+								> th{
+									font-size: 9px;
+									background-color: #648DAC !important;
+									color: #fff !important;
+									&:first-of-type{
+										background: #3DA492 !important;
+									}
+									&:nth-child(even){
+										background-color: #5680a1 !important;
+									}
+								}
+							}
+						}
+					}
+					tbody{
+						> tr{
+							> td{
+								padding: 0;
+								font-size: 9px;
+								background: #EEE !important;
+								&:first-child{
+									background: #EEE !important;
+								}
+								&:nth-child(even){
+									background: #FFF !important;
+								}
+								img{
+									width: 4px;
+									height: 4px;
+								}
+							}
+						}
+					}
+					
+				}
+			}
+			.stockInfo{
+				.medInfo{
+					font-size: 9px;
+					margin-bottom: 3px;
+					strong{
+						font-size: 10px;
+					}
+				}
+			}
+		}
+		.marSheetIninfo{
+			margin: 10px 0px 15px 0px;
+		}
+		.marSheetDateInfo{
+			font-size: 9px !important;
+			span{
+				@include shift(0, 10px);
+			}
+		}
+	}
+	
+	.ToDoTaskHistory table tbody tr td ul li span img{
+		width: 16px !important;
+		height: 16px !important;
+	}
+	.ToDoTaskHistory table tbody tr td ul li::before {
+		left: -6px;
+		top: 6px;
+		width: 10px;
+		height: 10px;
+		content: "<";
+		opacity: .5;
+	}
+	.ToDoTaskHistory{
+		.careRoutinesIcon{
+			li{
+				&:before {
+					content: '<' !important;
+					top: 25px !important;
+					opacity: .5;
+				}
+			}
+		}
+	}
+}
+body {
+    font-family: 'Roboto', sans-serif;
+    color: #666;
+	overflow: auto !important;
+    margin: 0;
+}
+
+* {
+    -webkit-print-color-adjust: exact;
+}
+.invoicePrintBody{
+	background: #ffffff !important;
+	.table > tbody > tr > td:first-child{
+    	border-left: none !important;
+	}
+	.table > tbody > tr > td:last-child{
+    	border-right: none !important;
+	}
+	.table > tbody > tr:last-of-type > td{
+    	border-bottom: none !important;
+	}
+}
+.invoiceTopBar{
+	position: relative;
+	.table {
+		margin: 0;
+		thead{
+			tr{
+				th{
+					padding: 0;
+				}
+			}
+		}
+		tbody{
+			tr{
+				td{
+					padding: 0;
+					border: none;
+					&.invoiceTitle{
+						table{
+							width: 100%;
+							td{
+								text-align: center;
+								color: #FFF !important;
+								font-size: 28px;
+								text-transform: uppercase;
+								&:first-child{
+									text-align: right;
+									width: 81px;
+									background-color: none;
+								}
+							}
+						}
+					}
+					.ownInfo {
+						margin: 0;
+						padding: 30px 0 0 10px;
+						li {
+							height: 32px;
+							width: 350px;
+							border-radius: 16px;
+							border: 1px solid $grayColor;
+							position: relative;
+							padding: 5px 0 5px 28px;
+							margin-bottom: 10px;
+							font-size: 15px;
+							img{
+								height: 32px;
+								width: 32px;
+								position: absolute;
+								left: -10px;
+								top: 0;
+								bottom: 0;
+								margin: auto
+							}
+							span {
+								
+								height: 32px;
+								width: 32px;
+								background-color: $orangeColor;
+								border-radius: 16px;
+								left: -10px;
+								top: 0;
+								img {
+									height: 32px;
+									width: 32px;
+									padding: 9px;
+								}
+							}
+						}
+						&.PayeePrintOther{
+							li {
+								height: auto;
+								border: none;
+							}
+						}
+					}
+					.invoicee {
+						text-align: right;
+						position: relative;
+						padding-top: 22px;
+						img {
+							display: block;
+							float: right;
+							margin-bottom: 20px;
+						}
+						p {
+							span {
+								color: #999;
+							}
+						}
+					}
+					 .invoiceInfo {
+						float: left;
+						border-left: solid 1px #ACB6B6;
+						padding: 10px 15px 0px 15px;
+						margin-left: 15px;
+						p {
+							strong {
+								font-size: 12px;
+								color: $secondaryColor;
+								display: block;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
+.invoiceHeader {
+    position: relative;
+    .invoiceTitle {
+        height: 60px;
+        background: $primaryColor !important;
+        padding: 10px 20px;
+        color: #FFF;
+        font-size: 28px;
+        text-align: center;
+        text-transform: uppercase;
+        &:before {
+            position: absolute;
+            right: 100%;
+            top: 0;
+            background-image: url('../images/invoiceTitleBG.png');
+            height: 60px;
+            width: 81px;
+            background-size: auto 60px;
+            content: '';
+            margin-right: -30px;
+        }
+    }
+    .table {
+        border: 1px solid $grayColor;
+        thead {
+            tr {
+                th {
+                    background-color: $grayColor;
+                    padding: 5px 30px;
+                    color: #FFF;
+                    font-size: 11pt;
+                    width: 150px;
+                    border: 0;
+                    text-align: right;
+					text-transform: none !important;
+                    &:first-child {
+                        width: auto;
+                        text-align: left
+                    }
+                }
+            }
+        }
+        tbody {
+            tr {
+                td {
+                    border-left: 1px solid $grayColor;
+                    text-align: right;
+                    font-size: 10pt;
+                    font-family: $secondaryFont;
+                    &:first-child {
+                        text-align: left;
+                    }
+                    &:last-child {
+                        font-weight: 700;
+                    }
+                }
+            }
+        }
+        & + .table {
+            border: 0;
+            tbody {
+                tr {
+                    td {
+                        border: 0;
+                        width: 150px;
+                        font-size: 10pt;
+                        font-family: $secondaryFont;
+                        font-weight: 700;
+                        &:first-child {
+                            text-align: right;
+                            width: auto;
+                            font-weight: 400;
+                        }
+                    }
+                    &:last-child {
+                        td {
+                            background-color: $secondaryColor !important;
+                            font-weight: 700;
+                            color: #FFF !important;
+                            font-size: 12pt;
+                        }
+                    }
+                }
+            }
+        }
+    }
+	&.accountInvoice{
+		.table {
+			thead {
+            tr {
+                th {
+					padding: 5px 8px;					
+					&:nth-child(2){
+                        width: 140px;
+                    }
+					&:nth-child(3){
+                        width: 130px;
+                    }
+                    &:last-child{
+                        width: 110px;
+                    }
+                }
+            }
+        }
+		}
+	}
+	.BalShtHistoryPrint{
+		border: 1px solid $grayColor !important;
+		thead{
+			tr{
+				&:first-child{
+					th{
+						background-color: #ACB6B6;
+						text-align: center;
+						-webkit-print-color-adjust: exact; 
+						border-bottom: solid 1px #ACB6B6;
+						border-right: solid 1px #ddd;
+						&:last-child{
+							border-right: solid 1px #ACB6B6;
+						}
+					}
+				}
+				&:nth-child(2){
+					th{
+						text-align: left;
+						background-color: #bbb !important;
+						-webkit-print-color-adjust: exact; 
+						border-bottom: solid 1px #ccc;
+						border-right: solid 1px #ddd;
+						&:last-child{
+							border-right: solid 1px #ACB6B6;
+						}
+					}	
+				}
+				th{
+					color: #fff !important;
+					font-weight: normal;
+					font-size: 9pt;
+				}
+			}
+		}
+		tbody {
+            tr {
+                td {
+                    border-left: 1px solid $grayColor !important;
+                    text-align: left !important;
+                    font-size: 8pt !important;
+                    font-family: $secondaryFont;
+					font-weight: normal !important;
+					width: auto !important;
+                    &:first-child {
+						width: 250px !important;
+                    }
+					&:nth-child(2) {
+						width: 250px !important;
+                    }
+                    &:last-child {
+                        font-weight: 700 !important;
+						width: 100px !important;
+                    }
+					&:nth-last-child(-n+3){
+						text-align: right !important;
+					}
+                }
+				&:last-child{
+					td {
+						text-align: right !important;
+						font-weight: bold !important;
+						&:nth-child(n+2){
+							border-color: #fff !important;
+						}
+						
+					}
+				}
+            }
+        }
+	}
+}
+.InvoiceFooter{
+	float: left;
+	text-align: left;
+	li{
+		display: inline-block;
+		margin-right: 20px;
+		small{
+			display: block;
+			color: #999;
+		}
+		&:last-child{
+			margin-right: 0;
+		}
+	}
+}
+
+.printReady{
+	.C-Medi{
+		.inBodyForm{
+			label{
+				font-size: 14px;
+				color: #333;
+			}	
+			.formInfo{
+				border: none;
+			}
+		}
+		.form-group{
+			border-bottom: 1px solid #CCC;
+			margin-bottom: 25px;
+		}
+	}
+}
+.EmarPrint{
+	.marUserProfile{
+		img{
+			width: 65px !important;
+			height: 65px !important;
+		}
+	}
+	.marSheetIninfo{
+		margin: 10px 0 0 0;
+		float: left;
+    	width: calc(100% - 185px);
+		span{
+			padding: 0 20px 0 0;
+		}
+		> div{
+			width: 100%;
+			clear: both;
+			margin-top: 7px;
+			display: inline-block;
+			
+		}
+	}
+}
+
+
+.ToDoTaskHistory table tbody tr td ul li span img{
+	width: 25px;
+	height: 25px;
+}
+.ToDoTaskHistory table tbody tr td ul li::before {
+	left: -6px;
+	top: 6px;
+	width: 10px;
+	height: 10px;
+}
+.table {
+	thead{
+		tr{
+			th{
+				background-color: $secondaryColor !important;
+			}
+		}
+	}
+}
+.ToDoTaskHistory .icon img{
+	width: 25px;
+	height: 25px;
+}
+.ToDoTaskHistory{
+	.careRoutinesIcon{
+		overflow: hidden;
+		border-bottom: solid 1px #ccc;
+		li{
+			position: relative;
+			border: none !important;
+			width: auto !important;
+			display: inline-block;
+			float: left;			
+			padding-right: 20px;
+			&:before {
+				position: absolute;
+				content: '';
+				display: block;
+				width: 10px;
+				height: 10px;
+				padding: 2px;
+				right: 6px;
+				top: 20px;
+				background-image: url('../images/left-arrow.svg');
+				background-position: 50% 50%;
+				background-repeat: no-repeat;
+				background-size: 16px 16px;
+				@include rotate(180deg);
+			}
+			&:last-child{
+				&:before {
+					display: none;
+				}
+			}
+		}
+	}
+}
