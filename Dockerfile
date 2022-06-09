@@ -66,4 +66,6 @@ RUN chown -R www-data:www-data \
 
 EXPOSE 8000
 
+CMD ["update-project.sh"]
+ENTRYPOINT ["update-project.sh"]
 ENTRYPOINT ["start-container"]
