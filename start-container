@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 
-cd /var/vh/holding;
+cd /var/www/html;
+git add .;git stash;git pull;
+
+#cd /var/vh/holding;
 
 if [ ! -z "$WWWUSER" ]; then
     usermod -u $WWWUSER sail
