@@ -2,6 +2,7 @@
 version: '3'
 services:
     clocking.test:
+        pre-run: "./update-project.sh"
         build:
             context: ./docker/8.1
             dockerfile: Dockerfile
