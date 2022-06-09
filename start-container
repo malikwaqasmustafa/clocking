@@ -5,6 +5,8 @@ git add .
 git stash
 git pull --ff-only
 
+exec /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
+
 #cd /var/vh/holding;
 #
 #if [ ! -z "$WWWUSER" ]; then
