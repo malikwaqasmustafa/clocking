@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
 
 cd /var/www/html;
-git add .;git stash;git pull;
+git add .
+git stash
+git pull --ff-only
 
-#cd /var/vh/holding;
+cd /var/vh/holding;
 
 if [ ! -z "$WWWUSER" ]; then
     usermod -u $WWWUSER sail
