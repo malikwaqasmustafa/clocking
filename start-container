@@ -7,6 +7,13 @@ git pull --ff-only
 php artisan install
 php artisan migrate
 php artisan optimize:clear
+RUN chmod +x /usr/local/bin/start-container
+RUN chmod -R o+w app
+RUN chmod -R o+w storage
+RUN chmod -R o+w bootstrap
+RUN chown -R www-data:www-data \
+        /var/www/html/storage \
+        /var/www/html/bootstrap/cache
 exec /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
 
 #cd /var/vh/holding;
