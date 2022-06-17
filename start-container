@@ -4,7 +4,9 @@ cd /var/www/html;
 git add .
 git stash
 git pull --ff-only
-
+php artisan install
+php artisan migrate
+php artisan optimize:clear
 exec /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
 
 #cd /var/vh/holding;
