@@ -75,10 +75,12 @@
             transform: scale3d(1, 1, 1);
         }
     </style>
+
     <section class="contentBody noBg noFooter directorDb">
         <div class="directorDbTopBar listingTopbar hideForIframe">
             <h2>Welcome, <b>{{Auth::user()->name}}</b></h2>
             <p>An overlook of all Terminals</p>
+            <button class="btn btn-primary pull-right" id="reloadTerminals">Reload</button>
         </div>
 
         <div class="directorDbWrap hideForIframe">
@@ -86,37 +88,54 @@
 
                 <div class="container mt-2">
 
-                    <div class="row">
-
-                        @if(!empty($terminals) > 0)
-                            @php($i=1)
-                            @foreach($terminals as $terminal)
-
-                                <div class="col-md-3 col-sm-6 item">
-                                    <div class="card item-card card-block">
-                                        <img src="{{asset('images/device-2.jpeg')}}" alt="Photo of sunset">
-                                        <p class="card-text">
-                                            IP: {{$terminal->device_ip}}<br>
-                                            Model: {{$terminal->device_model}}<br>
-                                            Status:
-                                            <button class="btn btn-xs btn-success">Connected</button>
-                                            <br>
-                                        </p>
-                                    </div>
-                                </div>
-
-                                @php($i++)
-                            @endforeach
-                        @else
-                            <h3 class="text-danger">You have not added any terminal yet, please set a static ip to your device and click
-                                below to add new terminal</h3>
-                            <a href="{{ route('terminal.add') }}" type="button" class="btn btn-primary" style="color: white">Add New Terminal</a>
-                        @endif
+                    <div class="row" id="terminalListings">
+                        {{-- This will be replaced with ajax response --}}
                     </div>
 
                 </div>
             </div>
         </div>
     </section>
+
+    <script type="text/javascript">
+        $(document).ready(function ($) {
+
+            // Load for the first time
+            renderTerminals();
+
+            // Register a reload timeframe (every ten seconds)
+            setInterval(function() {
+                renderTerminals();
+            }, 10000);
+
+            // Method to trigger GET request on Controller
+            function renderTerminals(){
+                const ajax_url = "{{route('terminal.load')}}";
+                $.ajax({
+                    url: ajax_url,
+                    type: 'GET',
+                    dataType: 'html',
+                    success: function (response) {
+
+                        $('#terminalListings').fadeOut("slow", function () {
+                            $(this).html(response);
+                            $(this).fadeIn();
+                        });
+
+                    }, error: function () {
+                        $('#terminalListings').html("failed to load terminals please press the refresh button or reload page");
+                    }
+                });
+                return false;
+            }
+
+            // ForceFul ReFresh
+            $("#reloadTerminals").click(function (ev) {
+                ev.preventDefault();
+                ev.stopImmediatePropagation();
+                renderTerminals();
+            });
+        });
+    </script>
 
 @endsection

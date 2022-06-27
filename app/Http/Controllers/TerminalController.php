@@ -51,5 +51,16 @@ class TerminalController extends Controller
 
         return response()->json(["status" => "failed", "message" => "Failed to add new terminal"]);
     }
+
+    /**
+     * Show the application dashboard.
+     *
+     * @return Renderable
+     */
+    public function loadTerminals(): Renderable
+    {
+        $terminals = Settings::all();
+        return view('includes.terminals', compact('terminals'));
+    }
 }
 

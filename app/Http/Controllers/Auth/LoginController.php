@@ -77,11 +77,13 @@ class LoginController extends Controller
                 if (!empty($responseCollection->get('success'))) {
                     $verifiedUserDetails = collect($responseCollection->get('data'));
 
-                    if ($verifiedUserDetails !== null) {
-                        $user = User::updateOrCreate(['users.email' => $verifiedUserDetails->get('email')], [
+                    if ($verifiedUserDetails->get('id')) {
+
+                        $user = User::updateOrCreate(['users.company_id' => $verifiedUserDetails->get('id')], [
                             'name'     => $verifiedUserDetails->get('name'),
                             'email'    => $verifiedUserDetails->get('email'),
-                            'password' => bcrypt($validated['password'])
+                            'password' => bcrypt($validated['password']),
+                            'company_id' => $verifiedUserDetails->get('id')
                         ]);
 
                         if ($user instanceof User) {
