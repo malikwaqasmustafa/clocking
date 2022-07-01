@@ -12,12 +12,12 @@ class ClockingRecord extends Model
     /**
      * @var string
      */
-    protected string $table = 'clocking_records';
+    protected $table = 'clocking_records';
 
     /**
      * @var string[]
      */
-    protected array $fillable = [
+    protected $fillable = [
         'UID',
         'name',
         'clocking_in',

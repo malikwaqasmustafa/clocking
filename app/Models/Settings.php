@@ -12,12 +12,12 @@ class Settings extends Model
     /**
      * @var string
      */
-    protected string $table = 'settings';
+    protected $table = 'settings';
 
     /**
      * @var string[]
      */
-    protected array $fillable = [
+    protected $fillable = [
         'device_ip',
         'api_url',
         'company_id',

@@ -29,17 +29,21 @@ class debugLogic extends Command
      */
     public function handle()
     {
-        $zk = new ZKTeco('192.168.100.200');
+        $unix_timestamp = strtotime("2022-07-01 18:35:19");
+//        dd($unix_timestamp);
+        $zk = new ZKTeco('192.168.100.200');//clock out
+//        $zk = new ZKTeco('192.168.100.100');//clock in
         $connections = $zk->connect();
         $enableDevice = $zk->enableDevice();
         $version = $zk->version();
         $os = $zk->osVersion();
         $serialNumber = $zk->serialNumber();
-        //$testVoice = $zk->testVoice();
-        //$users = $zk->getUser();
-        //$attendance = $zk->getAttendance();
-        $attendance = (new \App\Models\Attendance)->getAttendance($zk);
-        dd($serialNumber, $attendance);
+//        $testVoice = $zk->testVoice();
+        $users = $zk->getUser();
+        dump($serialNumber);
+        $attendance = $zk->getAttendance();
+//        $attendance = (new \App\Models\Attendance)->getAttendance($zk);
+        dd($attendance);
 
         return 0;
     }

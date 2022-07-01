@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\ClockingRecord;
 use App\Models\Settings;
 use Illuminate\Console\Command;
 use maliklibs\Zkteco\Lib\ZKTeco;
@@ -32,19 +33,72 @@ class SyncTerminals extends Command
         $terminals = Settings::all();
 
         foreach ($terminals as $terminal){
+
             $deviceIp = $terminal->device_ip;
+            $companyId = $terminal->company_id;
+            $apiUrl = $terminal->api_url;
+
             $this->info("device ip : {$deviceIp}");
 
             $zk = new ZKTeco($deviceIp);
             $zk->connect();
-            $zk->enableDevice();
+            $zk->disableDevice();
 
             $serialNumber = $zk->serialNumber();
 
+            /*
+             * Clocking Machine types
+                clock in 	= 0
+                clock out 	= 1
+                break out 	= 2
+                break in 	= 3
+             */
+
             if(!empty($serialNumber)){
                 $users = $zk->getUser();
-                $attendance = $zk->getAttendance();
-                dd($attendance);
+                $attendances = $zk->getAttendance();
+
+                foreach ($attendances as $attendance){
+                    $attendance = collect($attendance);
+
+                    $clockIn = "";
+                    $clockOut = "";
+                    $breakIn = "";
+                    $breakOut = "";
+
+                    switch ($attendance->get('type')) {
+                        case 0:
+                            $clockIn = $attendance->get('timestamp');
+                            break;
+                        case 1:
+                            $clockOut = $attendance->get('timestamp');
+                            break;
+                        case 2:
+                            $breakOut = $attendance->get('timestamp');
+                            break;
+                        case 3:
+                            $breakIn = $attendance->get('timestamp');
+                            break;
+
+                        default:
+                            break;
+                    }
+
+                    $storeAttendance = [
+                        "UID" => $attendance->get('id'),
+                        "name" => !empty($users[$attendance->get('id')]['name']) ? $users[$attendance->get('id')]['name'] : NULL,
+                        "clocking_in" => $clockIn,
+                        "clocking_out" => $clockOut,
+                        "break_in" => $breakIn,
+                        "break_out" => $breakOut,
+                        "status" => $attendance->get('type'),
+                        "company_id" => $companyId,
+                        "serial_number" => $serialNumber
+                    ];
+
+                    ClockingRecord::query()->create($storeAttendance);
+                }
+                $zk->enableDevice();
             }
         }
 

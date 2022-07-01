@@ -12,12 +12,12 @@ class SyncHistory extends Model
     /**
      * @var string
      */
-    protected string $table = 'sync_history';
+    protected $table = 'sync_history';
 
     /**
      * @var string[]
      */
-    protected array $fillable = [
+    protected $fillable = [
         'date',
         'serial_number'
     ];
