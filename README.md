@@ -1,6 +1,6 @@
-## About Laravel
+## About Clocking
 
-This is a UnOfficial Package for Laravel using ZKTeco devices for communications:
+This is a UnOfficial Project for using ZKTeco devices for communications:
 
 - [Simple, fast routing engine]
 - Database agnostic
