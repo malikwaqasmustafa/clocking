@@ -14,7 +14,7 @@ class TerminalController extends Controller
      *
      * @return Renderable
      */
-    public function add()
+    public function add(): Renderable
     {
         return view('add-terminal');
     }
@@ -61,6 +61,51 @@ class TerminalController extends Controller
     {
         $terminals = Settings::all();
         return view('includes.terminals', compact('terminals'));
+    }
+
+    /**
+     * Show the application add terminal.
+     *
+     * @param $id
+     * @return Renderable
+     */
+    public function edit($id): Renderable
+    {
+        $settings = Settings::find($id);
+
+        return view('edit-terminal', compact('settings'));
+    }
+
+    /**
+     * @param  Request  $request
+     * @return JsonResponse
+     */
+    public function update(Request $request): JsonResponse
+    {
+        $input = $request->all();
+
+        if (!empty($input['id'])) {
+
+            $update = [];
+            if (!empty($input['device_ip'])) {
+                $update['device_ip'] = $input['device_ip'];
+            }
+
+            if (!empty($input['device_model'])) {
+                $update['device_model'] = $input['device_model'];
+            }
+
+            if (!empty($update)) {
+                Settings::find($input['id'])->update($update);
+                return response()->json(["status" => "success", "message" => "Terminal updated successfully"]);
+            }
+
+            return response()->json(["status" => "success", "message" => "No change found"]);
+        }
+
+        return response()->json(["status"  => "error",
+                                 "message" => "Something went wrong please try again by refreshing the page or contact support"
+        ]);
     }
 }
 

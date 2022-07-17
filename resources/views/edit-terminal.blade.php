@@ -11,11 +11,11 @@
                         Add New Terminal
                         <hr>
                         <form id="inBodyForm" class="inBodyForm form-horizontal">
-                            <input type="hidden" name="id" value="{{$id}}">
+                            <input type="hidden" name="id" value="{{$settings->id}}">
                             <div class="form-group">
                                 <label class="col-md-4 control-label" for="device_ip">Device Ip</label>
                                 <div class="col-md-2">
-                                    <input type="text" name="device_ip" value="" class="form-control" id="device_ip" value="{{$ip}}">
+                                    <input type="text" name="device_ip" class="form-control" id="device_ip" value="{{$settings->device_ip}}">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -27,7 +27,7 @@
                             <div class="form-group">
                                 <label class="col-md-4 control-label" for="device_model">Device Model</label>
                                 <div class="col-md-2">
-                                    <input type="text" name="device_model" value="{{$model}}" class="form-control" id="device_model">
+                                    <input type="text" name="device_model" value="{{$settings->device_model}}" class="form-control" id="device_model">
                                 </div>
                             </div>
                             {{ csrf_field() }}
@@ -40,8 +40,8 @@
     <section class="contentFooter">
         <div class="row">
             <div class="col-md-6">
-                <button class="cancelbtn" href="#" type="button">Back</button>
-                <button type="button" id="saveform" class="saveformbtn save">Save</button>
+                <button class="cancelbtn" href="{{ url()->previous() }}" type="button">Back</button>
+                <button type="button" id="saveform" class="saveformbtn save">Update</button>
             </div>
         </div>
     </section>
@@ -68,7 +68,7 @@
                 e.preventDefault();
                 $('.btn').attr('disabled', 'disabled');
                 var formData = new FormData($(this)[0]);
-                var ajax_url = "{{ route('terminal.edit') }}";
+                var ajax_url = "{{ route('terminal.update') }}";
                 $.ajax({
                     url: ajax_url,
                     type: 'POST',

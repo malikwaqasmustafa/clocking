@@ -10,7 +10,7 @@
                     Model: {{$terminal->device_model}}<br>
                     Status:
                     <button class="btn btn-xs btn-success">Connected</button>
-                    <a href="#" class="btn btn-xs btn-primary">Edit Configurations</a>
+                    <a href="{{ route("terminal.edit", ['id' => $terminal->id]) }}" class="btn btn-xs btn-primary">Edit Configurations</a>
                 </p>
             </div>
         </div>

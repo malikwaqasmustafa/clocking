@@ -39,7 +39,7 @@
     <section class="contentFooter">
         <div class="row">
             <div class="col-md-6">
-                <button class="cancelbtn" href="#" type="button">Back</button>
+                <button class="cancelbtn" href="{{ url()->previous() }}" type="button">Back</button>
                 <button type="button" id="saveform" class="saveformbtn save">Save</button>
             </div>
         </div>

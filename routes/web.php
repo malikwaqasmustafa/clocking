@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\GuestController;
 use Illuminate\Support\Facades\Route;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -22,5 +21,6 @@ Route::post('/verify-login', [App\Http\Controllers\auth\LoginController::class, 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/add-terminal', [App\Http\Controllers\TerminalController::class, 'add'])->name('terminal.add');
 Route::post('/store-terminal', [App\Http\Controllers\TerminalController::class, 'store'])->name('terminal.save');
-Route::post('/store-terminal', [App\Http\Controllers\TerminalController::class, 'store'])->name('terminal.edit');
+Route::get('/edit-terminal/{id}', [App\Http\Controllers\TerminalController::class, 'edit'])->name('terminal.edit');
+Route::post('/edit-terminal', [App\Http\Controllers\TerminalController::class, 'update'])->name('terminal.update');
 Route::get('/load-terminals', [App\Http\Controllers\TerminalController::class, 'loadTerminals'])->name('terminal.load');
