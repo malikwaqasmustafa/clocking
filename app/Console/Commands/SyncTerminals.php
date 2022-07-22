@@ -32,74 +32,96 @@ class SyncTerminals extends Command
     {
         $terminals = Settings::all();
 
-        foreach ($terminals as $terminal){
+        DB::beginTransaction();
 
-            $deviceIp = $terminal->device_ip;
-            $companyId = $terminal->company_id;
-            $apiUrl = $terminal->api_url;
+        try {
 
-            $this->info("device ip : {$deviceIp}");
+            foreach ($terminals as $terminal)
+            {
 
-            $zk = new ZKTeco($deviceIp);
-            $zk->connect();
-            $zk->disableDevice();
+                $deviceIp = $terminal->device_ip;
+                $companyId = $terminal->company_id;
+                $apiUrl = $terminal->api_url;
 
-            $serialNumber = $zk->serialNumber();
+                $this->info("device ip : {$deviceIp}");
 
-            /*
-             * Clocking Machine types
-                clock in 	= 0
-                clock out 	= 1
-                break out 	= 2
-                break in 	= 3
-             */
+                $zk = new ZKTeco($deviceIp);
+                $zk->connect();
+                $zk->disableDevice();
 
-            if(!empty($serialNumber)){
-                $users = $zk->getUser();
-                $attendances = $zk->getAttendance();
+                $serialNumber = $zk->serialNumber();
 
-                foreach ($attendances as $attendance){
-                    $attendance = collect($attendance);
+                /*
+                 * Clocking Machine types
+                    clock in 	= 0
+                    clock out 	= 1
+                    break out 	= 2
+                    break in 	= 3
+                 */
 
-                    $clockIn = "";
-                    $clockOut = "";
-                    $breakIn = "";
-                    $breakOut = "";
+                if(!empty($serialNumber)){
+                    $users = $zk->getUser();
+                    $attendances = $zk->getAttendance();
 
-                    switch ($attendance->get('type')) {
-                        case 0:
-                            $clockIn = $attendance->get('timestamp');
-                            break;
-                        case 1:
-                            $clockOut = $attendance->get('timestamp');
-                            break;
-                        case 2:
-                            $breakOut = $attendance->get('timestamp');
-                            break;
-                        case 3:
-                            $breakIn = $attendance->get('timestamp');
-                            break;
+                    foreach ($attendances as $attendance){
+                        $attendance = collect($attendance);
 
-                        default:
-                            break;
+                        $clockIn = "";
+                        $clockOut = "";
+                        $breakIn = "";
+                        $breakOut = "";
+
+                        switch ($attendance->get('type')) {
+                            case 0:
+                                $clockIn = $attendance->get('timestamp');
+                                break;
+                            case 1:
+                                $clockOut = $attendance->get('timestamp');
+                                break;
+                            case 2:
+                                $breakOut = $attendance->get('timestamp');
+                                break;
+                            case 3:
+                                $breakIn = $attendance->get('timestamp');
+                                break;
+
+                            default:
+                                break;
+                        }
+
+                        $storeAttendance = [
+                            "UID" => $attendance->get('id'),
+                            "name" => !empty($users[$attendance->get('id')]['name']) ? $users[$attendance->get('id')]['name'] : NULL,
+                            "clocking_in" => $clockIn,
+                            "clocking_out" => $clockOut,
+                            "break_in" => $breakIn,
+                            "break_out" => $breakOut,
+                            "status" => $attendance->get('type'),
+                            "company_id" => $companyId,
+                            "serial_number" => $serialNumber
+                        ];
+
+                        ClockingRecord::query()->create($storeAttendance);
                     }
-
-                    $storeAttendance = [
-                        "UID" => $attendance->get('id'),
-                        "name" => !empty($users[$attendance->get('id')]['name']) ? $users[$attendance->get('id')]['name'] : NULL,
-                        "clocking_in" => $clockIn,
-                        "clocking_out" => $clockOut,
-                        "break_in" => $breakIn,
-                        "break_out" => $breakOut,
-                        "status" => $attendance->get('type'),
-                        "company_id" => $companyId,
-                        "serial_number" => $serialNumber
-                    ];
-
-                    ClockingRecord::query()->create($storeAttendance);
                 }
+
                 $zk->enableDevice();
             }
+
+            /**
+             * Sensitive Command By using database transactions we make sure if everything was committed successfully
+             * We can now safely clear this terminal's entries because we have written this in our local database
+             *
+             * Which additionally gets backed up to the Cloud Services Periodically
+            */
+
+            DB::commit();
+
+            $zk->clearAttendance();
+            // all good
+        } catch (\Exception $e) {
+            DB::rollback();
+            // something went wrong
         }
 
         return 0;

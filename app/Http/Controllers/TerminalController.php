@@ -6,6 +6,7 @@ use App\Models\Settings;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use maliklibs\Zkteco\Lib\ZKTeco;
 
 class TerminalController extends Controller
 {
@@ -31,6 +32,21 @@ class TerminalController extends Controller
         ]);
 
         if (!empty($validated)) {
+
+            /**
+             * Verify the connection with machine if it's pingable or not if yes fetch the serial number
+             * and update it in the settings table along with this new terminal creation
+            */
+            $zk = new ZKTeco($validated['device_ip']);
+            $zk->connect();
+            $zk->disableDevice();
+            $serialNumber = $zk->serialNumber();
+            $zk->enableDevice();
+
+            if (empty($serialNumber)){
+                return response()->json(["status" => "failed", "message" => "Incorrect settings, Connection failed"]);
+            }
+
             $setting = Settings::where('device_ip', $validated['device_ip'])->first();
 
             if (!$setting instanceof Settings) {
@@ -38,7 +54,8 @@ class TerminalController extends Controller
                     "device_ip"    => $validated['device_ip'],
                     "api_url"      => 'https://jawa.linksdev.co.uk/api/storeClocking',
                     "company_id"   => 3,
-                    "device_model" => $validated['device_model']
+                    "device_model" => $validated['device_model'],
+                    "serial_number" => $serialNumber
                 ]);
 
                 if ($setting instanceof Settings) {
@@ -88,7 +105,22 @@ class TerminalController extends Controller
 
             $update = [];
             if (!empty($input['device_ip'])) {
+                /**
+                 * Verify the connection with machine if it's pingable or not if yes fetch the serial number
+                 * and update it in the settings table along with this new terminal creation
+                 */
+                $zk = new ZKTeco($input['device_ip']);
+                $zk->connect();
+                $zk->disableDevice();
+                $serialNumber = $zk->serialNumber();
+                $zk->enableDevice();
+
+                if (empty($serialNumber)){
+                    return response()->json(["status" => "failed", "message" => "Incorrect settings, Connection failed"]);
+                }
+
                 $update['device_ip'] = $input['device_ip'];
+                $update['serial_number'] = $serialNumber;
             }
 
             if (!empty($input['device_model'])) {
@@ -107,5 +139,6 @@ class TerminalController extends Controller
                                  "message" => "Something went wrong please try again by refreshing the page or contact support"
         ]);
     }
+
 }
 
