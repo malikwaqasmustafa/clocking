@@ -8,6 +8,7 @@ composer install
 php artisan migrate
 php artisan optimize:clear
 RUN chmod +x /usr/local/bin/start-container
+RUN chmod -R o+w schedule.sh
 RUN chmod -R o+w app
 RUN chmod -R o+w storage
 RUN chmod -R o+w bootstrap
