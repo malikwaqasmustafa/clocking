@@ -52,8 +52,8 @@ class SyncClouds extends Command
                         ->orWhere('break_in', '>=', $lastSync)
                         ->orWhere('break_out', '>=', $lastSync);
                 })->get();*/
-                $attendanceLogs = ClockingRecord::where(DB::raw('(CASE WHEN clocking_in > clocking_out THEN 1 ELSE 0 END) AS is_user'))
-                dd(count($attendanceLogs));
+//                $attendanceLogs = ClockingRecord::where(DB::raw('(CASE WHEN clocking_in > clocking_out THEN 1 ELSE 0 END) AS is_user'))
+//                dd(count($attendanceLogs));
             }
             /*
              * Clocking Machine types
