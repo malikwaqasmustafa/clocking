@@ -4,7 +4,7 @@ cd /var/www/html;
 git add .
 git stash
 git pull --ff-only
-php artisan install
+composer install
 php artisan migrate
 php artisan optimize:clear
 RUN chmod +x /usr/local/bin/start-container
