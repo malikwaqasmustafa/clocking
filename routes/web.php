@@ -17,10 +17,10 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index']);
 
 
-Route::get('/login', [App\Http\Controllers\auth\LoginController::class, 'showLoginForm']);
-Route::post('/login', [App\Http\Controllers\auth\LoginController::class, 'login'])->name('login');
-Route::any('/logout', [App\Http\Controllers\auth\LoginController::class, 'logout'])->name('logout');
-Route::post('/verify-login', [App\Http\Controllers\auth\LoginController::class, 'login'])->name('verify.user');
+Route::get('/login', [App\Http\Controllers\Auth\LoginController::class, 'showLoginForm']);
+Route::post('/login', [App\Http\Controllers\Auth\LoginController::class, 'login'])->name('login');
+Route::any('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('logout');
+Route::post('/verify-login', [App\Http\Controllers\Auth\LoginController::class, 'login'])->name('verify.user');
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/add-terminal', [App\Http\Controllers\TerminalController::class, 'add'])->name('terminal.add');
 Route::post('/store-terminal', [App\Http\Controllers\TerminalController::class, 'store'])->name('terminal.save');
