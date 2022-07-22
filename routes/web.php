@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\GuestController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 /*
 |--------------------------------------------------------------------------
@@ -15,8 +16,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index']);
 
-Auth::routes();
 
+Route::get('/login', [App\Http\Controllers\auth\LoginController::class, 'showLoginForm']);
+Route::post('/login', [App\Http\Controllers\auth\LoginController::class, 'login'])->name('login');
+Route::any('/logout', [App\Http\Controllers\auth\LoginController::class, 'logout'])->name('logout');
 Route::post('/verify-login', [App\Http\Controllers\auth\LoginController::class, 'login'])->name('verify.user');
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/add-terminal', [App\Http\Controllers\TerminalController::class, 'add'])->name('terminal.add');

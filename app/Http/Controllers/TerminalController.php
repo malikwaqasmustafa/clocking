@@ -7,6 +7,7 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use maliklibs\Zkteco\Lib\ZKTeco;
+use Mockery\Exception;
 
 class TerminalController extends Controller
 {
@@ -37,11 +38,16 @@ class TerminalController extends Controller
              * Verify the connection with machine if it's pingable or not if yes fetch the serial number
              * and update it in the settings table along with this new terminal creation
             */
-            $zk = new ZKTeco($validated['device_ip']);
-            $zk->connect();
-            $zk->disableDevice();
-            $serialNumber = $zk->serialNumber();
-            $zk->enableDevice();
+            try {
+                $zk = new ZKTeco($validated['device_ip']);
+                $zk->connect();
+                $zk->disableDevice();
+                $serialNumber = $zk->serialNumber();
+                $zk->enableDevice();
+            }catch (Exception $exception){
+                return response()->json(["status" => "failed", "message" => $exception->getMessage()]);
+            }
+
 
             if (empty($serialNumber)){
                 return response()->json(["status" => "failed", "message" => "Incorrect settings, Connection failed"]);
