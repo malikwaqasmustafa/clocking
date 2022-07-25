@@ -23,6 +23,14 @@ class SyncClouds extends Command
      */
     protected $description = 'This command will push the saved local database data to the live connected clouds';
 
+    /*
+             * Clocking Machine types
+                clock in 	= 0
+                clock out 	= 1
+                break out 	= 2
+                break in 	= 3
+             */
+
     /**
      * Execute the console command.
      *
@@ -30,6 +38,7 @@ class SyncClouds extends Command
      */
     public function handle()
     {
+        /*
         $terminals = Settings::all();
 
         foreach ($terminals as $terminal) {
@@ -46,23 +55,17 @@ class SyncClouds extends Command
                 $attendanceLogs = ClockingRecord::all();
             } else {
                 $lastSync = date("Y-m-d H:i:s", strtotime($syncHistory->date));
-                /*$attendanceLogs = ClockingRecord::where(static function ($q) use ($lastSync) {
+                $attendanceLogs = ClockingRecord::where(static function ($q) use ($lastSync) {
                     $q->where('clocking_in', '>=', $lastSync)
                         ->orWhere('clocking_out', '>=', $lastSync)
                         ->orWhere('break_in', '>=', $lastSync)
                         ->orWhere('break_out', '>=', $lastSync);
-                })->get();*/
+                })->get();
 //                $attendanceLogs = ClockingRecord::where(DB::raw('(CASE WHEN clocking_in > clocking_out THEN 1 ELSE 0 END) AS is_user'))
 //                dd(count($attendanceLogs));
             }
-            /*
-             * Clocking Machine types
-                clock in 	= 0
-                clock out 	= 1
-                break out 	= 2
-                break in 	= 3
-             */
         }
+        */
 
         return 0;
     }
