@@ -38,7 +38,7 @@ class TerminalController extends Controller
              * Verify the connection with machine if it's pingable or not if yes fetch the serial number
              * and update it in the settings table along with this new terminal creation
             */
-            try {
+            /*try {
                 $zk = new ZKTeco($validated['device_ip']);
                 $zk->connect();
                 $zk->disableDevice();
@@ -51,7 +51,7 @@ class TerminalController extends Controller
 
             if (empty($serialNumber)){
                 return response()->json(["status" => "failed", "message" => "Incorrect settings, Connection failed"]);
-            }
+            }*/
 
             $setting = Settings::where('device_ip', $validated['device_ip'])->first();
 
@@ -61,7 +61,7 @@ class TerminalController extends Controller
                     "api_url"      => 'https://jawa.linksdev.co.uk/api/storeClocking',
                     "company_id"   => 3,
                     "device_model" => $validated['device_model'],
-                    "serial_number" => $serialNumber
+                    "serial_number" => ''//$serialNumber
                 ]);
 
                 if ($setting instanceof Settings) {
@@ -115,7 +115,7 @@ class TerminalController extends Controller
                  * Verify the connection with machine if it's pingable or not if yes fetch the serial number
                  * and update it in the settings table along with this new terminal creation
                  */
-                $zk = new ZKTeco($input['device_ip']);
+                /*$zk = new ZKTeco($input['device_ip']);
                 $zk->connect();
                 $zk->disableDevice();
                 $serialNumber = $zk->serialNumber();
@@ -123,10 +123,10 @@ class TerminalController extends Controller
 
                 if (empty($serialNumber)){
                     return response()->json(["status" => "failed", "message" => "Incorrect settings, Connection failed"]);
-                }
+                }*/
 
                 $update['device_ip'] = $input['device_ip'];
-                $update['serial_number'] = $serialNumber;
+                $update['serial_number'] = '';//$serialNumber;
             }
 
             if (!empty($input['device_model'])) {
