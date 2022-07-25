@@ -59,10 +59,13 @@ COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY php.ini /etc/php/8.1/cli/conf.d/99-sail.ini
 RUN chmod +x /usr/local/bin/start-container
 RUN chmod -R o+w storage
+# permissions for the database
+RUN chmod -R o+w database
 RUN chmod -R o+w bootstrap
 RUN chown -R www-data:www-data \
         /var/www/html/storage \
-        /var/www/html/bootstrap/cache
+        /var/www/html/bootstrap/cache \
+        /var/www/html/database
 
 EXPOSE 8000
 
