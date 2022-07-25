@@ -1,20 +1,30 @@
 #!/usr/bin/env bash
 
+# Working Directory
 cd /var/www/html;
+# Git related stuff
 git add .
 git stash
 git pull --ff-only
+# Laravel essentials to keep project up to date
 composer install
 php artisan migrate
 php artisan optimize:clear
+# Permissions neccassary in the container
 RUN chmod +x /usr/local/bin/start-container
 RUN chmod -R o+w schedule.sh
 RUN chmod -R o+w app
 RUN chmod -R o+w storage
 RUN chmod -R o+w bootstrap
+# permissions for the database
+RUN chmod 777 database
+RUN chmod 777 database/db
+RUN chmod 777 database/db/clocking.sqlite
+# Permissions for the other laravel directories for logs and caches
 RUN chown -R www-data:www-data \
         /var/www/html/storage \
         /var/www/html/bootstrap/cache
+# start the supervisor and find it's condifs inside conf file
 exec /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
 
 #cd /var/vh/holding;
