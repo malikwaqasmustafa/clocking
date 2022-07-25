@@ -72,7 +72,7 @@ class SyncClouds extends Command
 
             $attendanceLog = $attendanceLogs->toArray();
 
-            $attendanceLogChunks = array_chunk($attendanceLog, 10);
+            $attendanceLogChunks = array_chunk($attendanceLog, 100);
 
             foreach ($attendanceLogChunks as $attendanceLogChunk) {
                 $client = new Client([
@@ -86,7 +86,8 @@ class SyncClouds extends Command
                         ]
                     );
 
-                    if ($response->failed()) {
+                    $responseCode = $response->getStatusCode();
+                    if ($responseCode !== 200) {
                         Log::error("Failed to push records on Server");
                     } else {
                         // If successfully pushed get the last entry
@@ -105,29 +106,6 @@ class SyncClouds extends Command
                 }
             }
 
-            /*$mapRecords = [];
-            $i=0;
-            foreach ($attendanceLogs as $attendanceLog){
-                $attendanceLog = collect($attendanceLog);
-
-                /**
-                 * We will patch clock in, clock out, break in & break out into one single entry
-                 *
-                 * This will reduce the amount of data we are going to push it on the clout to save the bandwidth
-                 * & processing power
-                 */
-            /*$mapRecords[$i]['clocking_in'] = $attendanceLog->get('clocking_in');
-            $mapRecords[$i]['clocking_out'] = $attendanceLog->get('clocking_out');
-            $mapRecords[$i]['break_in'] = $attendanceLog->get('break_in');
-            $mapRecords[$i]['break_out'] = $attendanceLog->get('break_out');
-            $mapRecords[$i]['UID'] = $attendanceLog->get('UID');
-            $mapRecords[$i]['name'] = $attendanceLog->get('name');
-            $mapRecords[$i]['status'] = $attendanceLog->get('status');
-            $mapRecords[$i]['company_id'] = $attendanceLog->get('company_id');
-            $mapRecords[$i]['serial_number'] = $attendanceLog->get('serial_number');
-
-            $i++;
-        }*/
         }
 
 
