@@ -14,8 +14,6 @@ class Settings extends Model
      */
     protected $table = 'settings';
 
-    protected string $primaryKey = 'id';
-
     /**
      * @var string[]
      */
