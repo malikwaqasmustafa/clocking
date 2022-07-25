@@ -50,7 +50,7 @@ class SyncTerminals extends Command
                 $zk->disableDevice();
 
                 $serialNumber = $zk->serialNumber();
-
+                $serialNumber = collect(explode("=", $serialNumber))->last();
                 /*
                  * Clocking Machine types
                     clock in 	= 0

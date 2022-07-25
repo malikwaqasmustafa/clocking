@@ -29,6 +29,10 @@ class debugLogic extends Command
      */
     public function handle()
     {
+        $serialNumber = "~SerialNumber=BHXZ211860140";
+        $serialNumber = collect(explode("=", $serialNumber))->last();
+        dd($serialNumber);
+
         $unix_timestamp = strtotime("2022-07-01 18:35:19");
 //        dd($unix_timestamp);
         $zk = new ZKTeco('192.168.100.200');//clock out

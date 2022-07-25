@@ -38,7 +38,6 @@ class SyncClouds extends Command
      */
     public function handle()
     {
-        /*
         $terminals = Settings::all();
 
         foreach ($terminals as $terminal) {
@@ -54,18 +53,38 @@ class SyncClouds extends Command
             if (is_null($syncHistory)) {
                 $attendanceLogs = ClockingRecord::all();
             } else {
-                $lastSync = date("Y-m-d H:i:s", strtotime($syncHistory->date));
-                $attendanceLogs = ClockingRecord::where(static function ($q) use ($lastSync) {
-                    $q->where('clocking_in', '>=', $lastSync)
-                        ->orWhere('clocking_out', '>=', $lastSync)
-                        ->orWhere('break_in', '>=', $lastSync)
-                        ->orWhere('break_out', '>=', $lastSync);
-                })->get();
-//                $attendanceLogs = ClockingRecord::where(DB::raw('(CASE WHEN clocking_in > clocking_out THEN 1 ELSE 0 END) AS is_user'))
-//                dd(count($attendanceLogs));
+                //$lastSync = date("Y-m-d H:i:s", strtotime($syncHistory->date));
+                $lastSync = "2022-07-01 19:20:00";
+                /*$clockInCollection = ClockingRecord::where('clocking_in', '>=', $lastSync)->get();
+                $clockOutCollection = ClockingRecord::where('clocking_out', '>=', $lastSync)->get();
+                $breakInCollection = ClockingRecord::where('break_in', '>=', $lastSync)->get();
+                $breakOutCollection = ClockingRecord::where('break_out', '>=', $lastSync)->get();*/
+                $attendanceLogs = ClockingRecord::select(
+                    'clocking_in',
+                    'clocking_out',
+                    'break_in',
+                    'break_out',
+                    'UID',
+                    'name',
+                    'status',
+                    'company_id',
+                    'serial_number as machine_id'
+                )
+                    ->where(static function ($q) use ($lastSync) {
+                                    $q->where('clocking_in', '>=', $lastSync)
+                                        ->orWhere('clocking_out', '>=', $lastSync)
+                                        ->orWhere('break_in', '>=', $lastSync)
+                                        ->orWhere('break_out', '>=', $lastSync);
+                                })->get();
             }
+
+            $mapRecords = [];
+            foreach ($attendanceLogs as $attendanceLog){
+                dd($attendanceLog);
+            }
+
         }
-        */
+
 
         return 0;
     }
