@@ -38,7 +38,7 @@ class TerminalController extends Controller
              * Verify the connection with machine if it's pingable or not if yes fetch the serial number
              * and update it in the settings table along with this new terminal creation
             */
-            /*try {
+            try {
                 $zk = new ZKTeco($validated['device_ip']);
                 $zk->connect();
                 $zk->disableDevice();
@@ -51,7 +51,7 @@ class TerminalController extends Controller
 
             if (empty($serialNumber)){
                 return response()->json(["status" => "failed", "message" => "Incorrect settings, Connection failed"]);
-            }*/
+            }
 
             $setting = Settings::where('device_ip', $validated['device_ip'])->first();
 
@@ -115,7 +115,7 @@ class TerminalController extends Controller
                  * Verify the connection with machine if it's pingable or not if yes fetch the serial number
                  * and update it in the settings table along with this new terminal creation
                  */
-                /*$zk = new ZKTeco($input['device_ip']);
+                $zk = new ZKTeco($input['device_ip']);
                 $zk->connect();
                 $zk->disableDevice();
                 $serialNumber = $zk->serialNumber();
@@ -123,7 +123,7 @@ class TerminalController extends Controller
 
                 if (empty($serialNumber)){
                     return response()->json(["status" => "failed", "message" => "Incorrect settings, Connection failed"]);
-                }*/
+                }
 
                 $update['device_ip'] = $input['device_ip'];
                 $update['serial_number'] = '';//$serialNumber;
