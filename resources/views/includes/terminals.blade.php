@@ -5,11 +5,22 @@
         <div class="col-md-3 col-sm-6 item">
             <div class="card item-card card-block">
                 <img src="{{asset('images/device-2.jpeg')}}" alt="Photo of sunset">
+                <?php
+                    $status = \App\Models\Settings::verifyStatus($terminal->device_ip)
+                    $class = "";
+                    if($status === "Connected"){
+                        $class = "btn-success";
+                    }else{
+                        $class = "btn-danger";
+                    }
+                ?>
                 <p class="card-text">
                     IP: {{$terminal->device_ip}}<br>
                     Model: {{$terminal->device_model}}<br>
                     Status:
-                    <button class="btn btn-xs btn-success">Connected</button>
+                    <button class="btn btn-xs {{$class}}">
+                        {{ $status }}
+                    </button>
                     <a href="{{ route("terminal.edit", ['id' => $terminal->id]) }}" class="btn btn-xs btn-primary">Edit Configurations</a>
                 </p>
             </div>
