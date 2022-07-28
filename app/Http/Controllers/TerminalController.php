@@ -28,7 +28,7 @@ class TerminalController extends Controller
     public function store(Request $request): JsonResponse
     {
         $validated = $request->validate([
-            'device_ip'    => 'required',
+            'device_ip'    => 'required|ipv4',
             'device_model' => 'required'
         ]);
 
@@ -105,43 +105,54 @@ class TerminalController extends Controller
      */
     public function update(Request $request): JsonResponse
     {
-        $input = $request->all();
+        $validated = $request->validate([
+            'device_ip'    => 'required|ipv4',
+            'device_model' => 'required'
+        ]);
 
-        if (!empty($input['id'])) {
+        if (!empty($validated)) {
+            $input = $request->all();
 
-            $update = [];
-            if (!empty($input['device_ip'])) {
-                /**
-                 * Verify the connection with machine if it's pingable or not if yes fetch the serial number
-                 * and update it in the settings table along with this new terminal creation
-                 */
-                $zk = new ZKTeco($input['device_ip']);
-                $zk->connect();
-                $zk->disableDevice();
-                $serialNumber = $zk->serialNumber();
-                $zk->enableDevice();
+            if (!empty($input['id'])) {
 
-                if (empty($serialNumber)){
-                    return response()->json(["status" => "failed", "message" => "Incorrect settings, Connection failed"]);
+                $update = [];
+                if (!empty($input['device_ip'])) {
+                    /**
+                     * Verify the connection with machine if it's pingable or not if yes fetch the serial number
+                     * and update it in the settings table along with this new terminal creation
+                     */
+                    $zk = new ZKTeco($input['device_ip']);
+                    $zk->connect();
+                    $zk->disableDevice();
+                    $serialNumber = $zk->serialNumber();
+                    $zk->enableDevice();
+
+                    if (empty($serialNumber)){
+                        return response()->json(["status" => "failed", "message" => "Incorrect settings, Connection failed"]);
+                    }
+
+                    $update['device_ip'] = $input['device_ip'];
+                    $update['serial_number'] = '';//$serialNumber;
                 }
 
-                $update['device_ip'] = $input['device_ip'];
-                $update['serial_number'] = '';//$serialNumber;
+                if (!empty($input['device_model'])) {
+                    $update['device_model'] = $input['device_model'];
+                }
+
+                if (!empty($update)) {
+                    Settings::find($input['id'])->update($update);
+                    return response()->json(["status" => "success", "message" => "Terminal updated successfully"]);
+                }
+
+                return response()->json(["status" => "success", "message" => "No change found"]);
             }
 
-            if (!empty($input['device_model'])) {
-                $update['device_model'] = $input['device_model'];
-            }
-
-            if (!empty($update)) {
-                Settings::find($input['id'])->update($update);
-                return response()->json(["status" => "success", "message" => "Terminal updated successfully"]);
-            }
-
-            return response()->json(["status" => "success", "message" => "No change found"]);
+            return response()->json(["status"  => "failed",
+                                     "message" => "Something went wrong please try again by refreshing the page or contact support"
+            ]);
         }
 
-        return response()->json(["status"  => "error",
+        return response()->json(["status"  => "failed",
                                  "message" => "Something went wrong please try again by refreshing the page or contact support"
         ]);
     }

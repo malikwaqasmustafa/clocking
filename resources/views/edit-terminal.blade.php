@@ -86,9 +86,11 @@
                         } else {
                             toastr.error(response.message, "Error", toastr_opts);
                         }
-                    }, error: function (ErrorResponse) {
-                        toastr.error(ErrorResponse.message, "Error", toastr_opts);
-                        $('.btn').removeAttr('disabled');
+                    }, error: function (reject) {
+                        if( reject.status === 422 ) {
+                            var errors = $.parseJSON(reject.responseText);
+                            toastr.error(errors.message, "Error", toastr_opts);
+                        }
                     }
                 });
                 return false;

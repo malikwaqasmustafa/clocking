@@ -79,15 +79,22 @@
                     data: formData,
                     success: function (response) {
                         $('.btn').removeAttr('disabled');
-                        if (response.status == 'success') {
-                            ShowToastr("success", response.message);
-                            window.location.href = '<?php echo route('home'); ?>';
+                        if (typeof(response.status) != "undefined" && response.status !== null) {
+                            if(response.status !== "failed"){
+                                ShowToastr("success", response.message);
+                                window.location.href = '<?php echo route('home'); ?>';
+                            }else{
+                                toastr.error(response.message, "Error", toastr_opts);
+                            }
                         } else {
                             toastr.error(response.message, "Error", toastr_opts);
                         }
-                    }, error: function (ErrorResponse) {
-                        toastr.error(ErrorResponse.message, "Error", toastr_opts);
-                        $('.btn').removeAttr('disabled');
+                    },
+                    error: function (reject) {
+                        if( reject.status === 422 ) {
+                            var errors = $.parseJSON(reject.responseText);
+                            toastr.error(errors.message, "Error", toastr_opts);
+                        }
                     }
                 });
                 return false;
