@@ -33,13 +33,11 @@ class Settings extends Model
     public static function verifyStatus($ip): string
     {
         try {
+            socket_set_timeout(5);
             $zk = new ZKTeco($ip);
             $zk->connect();
-            $zk->disableDevice();
-            $serialNumber = $zk->serialNumber();
-            $zk->enableDevice();
 
-            if(!empty($serialNumber)){
+            if($zk->connect()){
                 return "Connected";
             }
 
