@@ -33,9 +33,8 @@ class Settings extends Model
     public static function verifyStatus($ip): string
     {
         try {
-            socket_set_timeout(5);
-            $zk = new ZKTeco($ip);
-            $zk->connect();
+
+            $zk = new ZKTeco($ip, 4370, 5);
 
             if($zk->connect()){
                 return "Connected";

@@ -106,7 +106,7 @@
             // Register a reload timeframe (every ten seconds)
             setInterval(function() {
                 renderTerminals();
-            }, 10000);
+            }, 60*1000);
 
             // Method to trigger GET request on Controller
             function renderTerminals(){

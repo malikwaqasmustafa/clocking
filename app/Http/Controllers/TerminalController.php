@@ -40,10 +40,11 @@ class TerminalController extends Controller
             */
             try {
                 $zk = new ZKTeco($validated['device_ip']);
-                $zk->connect();
-                $zk->disableDevice();
-                $serialNumber = $zk->serialNumber();
-                $zk->enableDevice();
+                if($zk->connect()){
+                    $zk->disableDevice();
+                    $serialNumber = $zk->serialNumber();
+                    $zk->enableDevice();
+                }
             }catch (Exception $exception){
                 return response()->json(["status" => "failed", "message" => $exception->getMessage()]);
             }

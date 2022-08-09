@@ -10,6 +10,9 @@
 </head>
 
 <body>
+
+@include('loader')
+
 <section class="login">
     <img src="{{ asset('ui_assets/images/logo-login.png') }}" alt="Care Vision" class="logo">
     <div class="loginSection">
@@ -31,7 +34,7 @@
                 @endif
             </div>
             <input id="company_id" type="hidden" name="company_id" value="">
-            <button type="submit">Sign In</button>
+            <button type="submit" id="signIn">Sign In</button>
         </form>
         <p class="copy">&copy; <?php echo date('Y');?> CareVision Management Ltd. All Rights Reserved</p>
     </div>
@@ -40,12 +43,17 @@
 <script src="{{asset('ui_assets/js/toastr.js')}}"></script>
 <script>
 
+    $(document).on('click', '#signIn', function (){
+        $(".loadingdiv").css("display","block");
+    });
+
     $(document).ready(function (event) {
         $('#loginform').submit(function (e) {
             e.stopImmediatePropagation;
             e.preventDefault;
             var loginroute = $('#loginform').attr('action');
             var formdata = jQuery(this).serializeArray();
+
             jQuery.ajax({
                 method: "POST",
                 url: loginroute,
@@ -55,6 +63,7 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 success: function (data) {
+                    $(".loadingdiv").css("display","none");
                     if (data.status === "failed") {
                         toastr.error('These credentials do not match our records.', "Error");
                         return false;
@@ -62,6 +71,7 @@
                         window.location.href = '{{ route('home') }}'
                     }
                 }, error: function (response) {
+                    $(".preloader").css("display","none");
                     if (typeof response == 'object') {
                         toastr.error('These credentials do not match our records.', "Error");
                     } else {
@@ -69,6 +79,7 @@
                     }
                 }
             });
+            $(".loadingdiv").css("display","none");
             return false;
         });
     });
