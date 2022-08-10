@@ -51,7 +51,9 @@ class TerminalController extends Controller
 
 
             if (empty($serialNumber)){
-                return response()->json(["status" => "failed", "message" => "Incorrect settings, Connection failed"]);
+                return response()->json([
+                    "status" => "failed",
+                    "message" => "On this IP no active machine found please correct the ip and make sure there is an actual machine on it."]);
             }
 
             $setting = Settings::where('device_ip', $validated['device_ip'])->first();
@@ -118,18 +120,27 @@ class TerminalController extends Controller
 
                 $update = [];
                 if (!empty($input['device_ip'])) {
+
                     /**
                      * Verify the connection with machine if it's pingable or not if yes fetch the serial number
                      * and update it in the settings table along with this new terminal creation
                      */
-                    $zk = new ZKTeco($input['device_ip']);
-                    $zk->connect();
-                    $zk->disableDevice();
-                    $serialNumber = $zk->serialNumber();
-                    $zk->enableDevice();
+                    try {
+                        $zk = new ZKTeco($validated['device_ip']);
+                        if($zk->connect()){
+                            $zk->disableDevice();
+                            $serialNumber = $zk->serialNumber();
+                            $zk->enableDevice();
+                        }
+                    }catch (Exception $exception){
+                        return response()->json(["status" => "failed", "message" => $exception->getMessage()]);
+                    }
+
 
                     if (empty($serialNumber)){
-                        return response()->json(["status" => "failed", "message" => "Incorrect settings, Connection failed"]);
+                        return response()->json([
+                            "status" => "failed",
+                            "message" => "On this IP no active machine found please correct the ip and make sure there is an actual machine on it."]);
                     }
 
                     $update['device_ip'] = $input['device_ip'];

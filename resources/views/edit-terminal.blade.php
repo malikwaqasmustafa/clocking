@@ -3,6 +3,7 @@
     <section class="contentHeader">
 
     </section>
+    @include('loader')
     <section class="contentBody">
         <div class="scrollArea">
             <div class="content">
@@ -73,10 +74,13 @@
                     url: ajax_url,
                     type: 'POST',
                     dataType: 'json',
-                    async: false,
+                    async: true,
                     cache: false,
                     contentType: false,
                     processData: false,
+                    beforeSend: function () {
+                        $(".preloader").css("display","block");
+                    },
                     data: formData,
                     success: function (response) {
                         $('.btn').removeAttr('disabled');
@@ -86,11 +90,15 @@
                         } else {
                             toastr.error(response.message, "Error", toastr_opts);
                         }
+                        $(".preloader").css("display","none");
                     }, error: function (reject) {
                         if( reject.status === 422 ) {
                             var errors = $.parseJSON(reject.responseText);
                             toastr.error(errors.message, "Error", toastr_opts);
                         }
+                        $(".preloader").css("display","none");
+                    }, complete: function () {
+                        $(".preloader").css("display","none");
                     }
                 });
                 return false;

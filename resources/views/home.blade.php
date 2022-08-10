@@ -76,6 +76,8 @@
         }
     </style>
 
+    @include('loader')
+
     <section class="contentBody noBg noFooter directorDb">
         <div class="directorDbTopBar listingTopbar hideForIframe">
             <h2>Welcome, <b>{{Auth::user()->name}}</b></h2>
@@ -98,14 +100,15 @@
     </section>
 
     <script type="text/javascript">
-        $(document).ready(function ($) {
+        $(document).ready(function (e) {
 
             // Load for the first time
             renderTerminals();
 
             // Register a reload timeframe (every ten seconds)
             setInterval(function() {
-                renderTerminals();
+
+                renderTerminals()
             }, 60*1000);
 
             // Method to trigger GET request on Controller
@@ -115,15 +118,22 @@
                     url: ajax_url,
                     type: 'GET',
                     dataType: 'html',
+                    beforeSend: function() {
+                        $(".preloader").css("display","block");
+                    },
                     success: function (response) {
 
                         $('#terminalListings').fadeOut("slow", function () {
                             $(this).html(response);
                             $(this).fadeIn();
                         });
+                        $(".preloader").css("display","none");
 
                     }, error: function () {
                         $('#terminalListings').html("failed to load terminals please press the refresh button or reload page");
+                        $(".preloader").css("display","none");
+                    }, complete: function() {
+                        $(".preloader").css("display","none");
                     }
                 });
                 return false;

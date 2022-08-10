@@ -21,20 +21,20 @@
         <form autocomplete="off" id="loginform" action="{{ route('verify.user') }}">
             <div class="form-group">
                 <label for="username">Username</label>
-                <input type="text" name="username" id="username" value="{{ old('username') }}" required>
+                <input type="text" name="username" id="username" value="{{ old('username') }}">
                 @if ($errors->has('email'))
                     <span class="error">Wrong credentials. Try again or contact your account administrator.</span>
                 @endif
             </div>
             <div class="form-group">
                 <label for="password">Password</label>
-                <input type="password" name="password" id="password" required>
+                <input type="password" name="password" id="password">
                 @if ($errors->has('password'))
                     <span class="error">Wrong credentials. Try again or contact your account administrator.</span>
                 @endif
             </div>
             <input id="company_id" type="hidden" name="company_id" value="">
-            <button type="submit" id="signIn">Sign In</button>
+            <button type="submit" id="signIn" class="signIn">Sign In</button>
         </form>
         <p class="copy">&copy; <?php echo date('Y');?> CareVision Management Ltd. All Rights Reserved</p>
     </div>
@@ -43,45 +43,51 @@
 <script src="{{asset('ui_assets/js/toastr.js')}}"></script>
 <script>
 
-    $(document).on('click', '#signIn', function (){
-        $(".loadingdiv").css("display","block");
+    $(document).on('click', '.signIn', function (){
+
     });
 
-    $(document).ready(function (event) {
-        $('#loginform').submit(function (e) {
-            e.stopImmediatePropagation;
-            e.preventDefault;
-            var loginroute = $('#loginform').attr('action');
-            var formdata = jQuery(this).serializeArray();
 
-            jQuery.ajax({
-                method: "POST",
-                url: loginroute,
-                type: 'JSON',
-                data: formdata,
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                success: function (data) {
-                    $(".loadingdiv").css("display","none");
-                    if (data.status === "failed") {
-                        toastr.error('These credentials do not match our records.', "Error");
-                        return false;
-                    } else {
-                        window.location.href = '{{ route('home') }}'
-                    }
-                }, error: function (response) {
-                    $(".preloader").css("display","none");
-                    if (typeof response == 'object') {
-                        toastr.error('These credentials do not match our records.', "Error");
-                    } else {
-                        location.reload();
-                    }
+    $(document).on("submit", "#loginform", function (e) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+
+        var loginroute = $('#loginform').attr('action');
+        var formdata = $(this).serializeArray();
+
+        $.ajax({
+            method: "POST",
+            url: loginroute,
+            type: 'JSON',
+            data: formdata,
+            beforeSend: function() {
+                $(".preloader").css("display","block");
+            },
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function (data) {
+
+                if (data.status === "failed") {
+                    toastr.error(data.message, "Error");
+                    return false;
+                } else {
+                    window.location.href = '{{ route('home') }}'
                 }
-            });
-            $(".loadingdiv").css("display","none");
-            return false;
+                $(".preloader").css("display","none");
+            }, error: function (response) {
+
+                if( response.status === 422 ) {
+                    var errors = $.parseJSON(response.responseText);
+                    toastr.error(errors.message, "Error", toastr_opts);
+                }
+                $(".preloader").css("display","none");
+            }, complete: function() {
+                $(".preloader").css("display","none");
+            },
         });
+
+        return false;
     });
 </script>
 </body>
