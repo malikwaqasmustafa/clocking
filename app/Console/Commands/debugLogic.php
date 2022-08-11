@@ -3,9 +3,10 @@
 namespace App\Console\Commands;
 
 use App\Models\Attendance;
+use GuzzleHttp\Client;
 use Illuminate\Console\Command;
 use maliklibs\Zkteco\Lib\ZKTeco;
-
+use DB;
 class debugLogic extends Command
 {
     /**
@@ -29,6 +30,7 @@ class debugLogic extends Command
      */
     public function handle()
     {
+        $this->reportToServerOnFailure("192.16.100.200", 3, ["failed to connect to ip while sync"]);
 //        $serialNumber = "~SerialNumber=BHXZ211860140";
 //        $serialNumber = collect(explode("=", $serialNumber))->last();
 //        dd($serialNumber);
@@ -50,5 +52,28 @@ class debugLogic extends Command
         dd($attendance);
 
         return 0;
+    }
+
+    private function reportToServerOnFailure($ip, $company_id, $errors) {
+        $client = new Client();
+        $endPointUrl = config('server.url');
+        $response = $client->request('POST', $endPointUrl.'clocking/error/log', [
+            'form_params' => [
+                'ip' => $ip,
+                'company_id' => $company_id,
+                'error_message' => implode(",", $errors)
+            ]
+        ]);
+
+        if ($response->getStatusCode() === 200) {
+            $responseCollection = collect(json_decode($response->getBody()->getContents(), false, 512, JSON_THROW_ON_ERROR));
+
+            if (!empty($responseCollection->get('status')) && $responseCollection->get('status') == "success") {
+                DB::table('error_logs')->insert([
+                    "ip" => $ip,
+                    "error" => implode(",", $errors)
+                ]);
+            }
+        }
     }
 }

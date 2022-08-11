@@ -4,8 +4,14 @@ namespace App\Console\Commands;
 
 use App\Models\ClockingRecord;
 use App\Models\Settings;
+use App\Models\User;
+use GuzzleHttp\Client;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Auth;
+use League\Flysystem\Config;
 use maliklibs\Zkteco\Lib\ZKTeco;
+use Mockery\Exception;
+use DB;
 
 class SyncTerminals extends Command
 {
@@ -45,11 +51,25 @@ class SyncTerminals extends Command
 
                 $this->info("device ip : {$deviceIp}");
 
-                $zk = new ZKTeco($deviceIp);
-                $zk->connect();
-                $zk->disableDevice();
+                $serialNumber = null;
+                try {
+                    $zk = new ZKTeco($deviceIp);
+                    if($zk->connect()){
+                        $zk->disableDevice();
+                        $serialNumber = $zk->serialNumber();
+                        $zk->enableDevice();
+                    }
+                }catch (Exception $exception){
+                    $errors[] = $exception->getMessage();
+                }
 
-                $serialNumber = $zk->serialNumber();
+
+                if (empty($serialNumber)){
+                    $errors[] = "unable to connect to machine on this IP: ".$deviceIp;
+                    $this->reportToServerOnFailure($deviceIp, $companyId, $errors);
+                    continue;
+                }
+
                 $serialNumber = collect(explode("=", $serialNumber))->last();
                 /*
                  * Clocking Machine types
@@ -125,5 +145,28 @@ class SyncTerminals extends Command
         }
 
         return 0;
+    }
+
+    private function reportToServerOnFailure($ip, $company_id, $errors) {
+        $client = new Client();
+        $endPointUrl = config('server.url');
+        $response = $client->request('POST', $endPointUrl.'clocking/error/log', [
+            'form_params' => [
+                'ip' => $ip,
+                'company_id' => $company_id,
+                'error_message' => implode(",", $errors)
+            ]
+        ]);
+
+        if ($response->getStatusCode() === 200) {
+            $responseCollection = collect(json_decode($response->getBody()->getContents(), false, 512, JSON_THROW_ON_ERROR));
+
+            if (!empty($responseCollection->get('status')) && $responseCollection->get('status') == "success") {
+                DB::table('error_logs')->insert([
+                    "ip" => $ip,
+                    "error" => implode(",", $errors)
+                ]);
+            }
+        }
     }
 }
