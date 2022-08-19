@@ -24,18 +24,6 @@ services:
         networks:
             - sail
         depends_on:
-
-    scheduler:
-        image: laravel-www
-        container_name: Clocking-scheduler
-        depends_on:
-            - clocking.test
-        volumes:
-            - .:/var/www/html
-        environment:
-            APP_ENV: local
-            CONTAINER_ROLE: scheduler
-
 #            - mysql
 #            - redis
 #            - meilisearch
