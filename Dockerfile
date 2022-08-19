@@ -55,11 +55,14 @@ RUN useradd -ms /bin/bash --no-user-group -g $WWWGROUP -u 1337 sail
 
 COPY . /var/www/html
 COPY start-container /usr/local/bin/start-container
+COPY schedule.sh /usr/local/bin/start
+RUN chmod u+x /usr/local/bin/start
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY php.ini /etc/php/8.1/cli/conf.d/99-sail.ini
 RUN chmod +x /usr/local/bin/start-container
 RUN chmod -R o+w storage
 # permissions for the database
+
 RUN chmod -R o+w database
 RUN chmod -R o+w bootstrap
 RUN chown -R www-data:www-data \
@@ -70,4 +73,5 @@ RUN chown -R www-data:www-data \
 EXPOSE 8000
 
 CMD ["update-project.sh"]
+CMD ["/usr/local/bin/start"]
 ENTRYPOINT ["start-container"]
