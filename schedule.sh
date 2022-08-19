@@ -14,6 +14,7 @@ elif [ "$role" = "queue" ]; then
 elif [ "$role" = "scheduler" ]; then
     while [ true ]
     do
+      echo "running scheduler.."
       php /var/www/html/artisan schedule:run --verbose --no-interaction &
       sleep 60
     done
