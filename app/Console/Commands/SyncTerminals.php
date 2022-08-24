@@ -137,7 +137,7 @@ class SyncTerminals extends Command
 
             DB::commit();
 
-            $zk->clearAttendance();
+            //$zk->clearAttendance();
             // all good
         } catch (\Exception $e) {
             DB::rollback();
