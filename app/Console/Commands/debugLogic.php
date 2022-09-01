@@ -38,6 +38,7 @@ class debugLogic extends Command
 //        dd($serialNumber);
 
 //        dd($unix_timestamp);
+        $errors = [];
         try {
             $zk = new ZKTeco('192.168.16.60');
             if($zk->connect()){
@@ -48,7 +49,7 @@ class debugLogic extends Command
         }catch (Exception $exception){
             $errors[] = $exception->getMessage();
         }
-        dd($errors);
+        dd($errors, $serialNumber);
         //$zk = new ZKTeco('192.168.16.60');//clock out
 //        $zk = new ZKTeco('192.168.100.100');//clock in
         $connections = $zk->connect();
