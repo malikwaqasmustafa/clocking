@@ -39,13 +39,13 @@ class debugLogic extends Command
 
 //        dd($unix_timestamp);
         $errors = [];
+        $serialNumber = [];
         try {
             $zk = new ZKTeco('192.168.16.60');
-            if($zk->connect()){
-                $zk->disableDevice();
-                $serialNumber = $zk->serialNumber();
-                $zk->enableDevice();
-            }
+            $zk->connect();
+            $zk->disableDevice();
+            $serialNumber = $zk->serialNumber();
+            $zk->enableDevice();
         }catch (Exception $exception){
             $errors[] = $exception->getMessage();
         }
