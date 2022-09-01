@@ -43,10 +43,9 @@ class debugLogic extends Command
         $version = $zk->version();
         $os = $zk->osVersion();
         $serialNumber = $zk->serialNumber();
-        dd($serialNumber);
 //        $testVoice = $zk->testVoice();
         $users = $zk->getUser();
-        dump($serialNumber);
+        dump($serialNumber, $users);
         $attendance = $zk->getAttendance();
 //        $attendance = (new \App\Models\Attendance)->getAttendance($zk);
         dd($attendance);
