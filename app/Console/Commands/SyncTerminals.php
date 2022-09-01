@@ -66,6 +66,9 @@ class SyncTerminals extends Command
 
                 if (empty($serialNumber)){
                     $errors[] = "unable to connect to machine on this IP: ".$deviceIp;
+                }
+
+                if (!empty($errors)){
                     $this->reportToServerOnFailure($deviceIp, $companyId, $errors);
                     continue;
                 }
