@@ -48,7 +48,7 @@ class debugLogic extends Command
         }catch (Exception $exception){
             $errors[] = $exception->getMessage();
         }
-
+        dd($errors);
         //$zk = new ZKTeco('192.168.16.60');//clock out
 //        $zk = new ZKTeco('192.168.100.100');//clock in
         $connections = $zk->connect();
