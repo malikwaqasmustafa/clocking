@@ -40,16 +40,18 @@ class debugLogic extends Command
 //        dd($unix_timestamp);
         $errors = [];
         $serialNumber = [];
+        $users = [];
         try {
             $zk = new ZKTeco('192.168.16.60');
             $zk->connect();
             $zk->disableDevice();
             $serialNumber = $zk->serialNumber();
+            $users = $zk->getUser();
             $zk->enableDevice();
         }catch (Exception $exception){
             $errors[] = $exception->getMessage();
         }
-        dd($errors, $serialNumber);
+        dd($errors, $serialNumber, $users);
         //$zk = new ZKTeco('192.168.16.60');//clock out
 //        $zk = new ZKTeco('192.168.100.100');//clock in
         $connections = $zk->connect();
