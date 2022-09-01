@@ -7,6 +7,8 @@ use GuzzleHttp\Client;
 use Illuminate\Console\Command;
 use maliklibs\Zkteco\Lib\ZKTeco;
 use DB;
+use Mockery\Exception;
+
 class debugLogic extends Command
 {
     /**
@@ -36,7 +38,18 @@ class debugLogic extends Command
 //        dd($serialNumber);
 
 //        dd($unix_timestamp);
-        $zk = new ZKTeco('192.168.16.60');//clock out
+        try {
+            $zk = new ZKTeco('192.168.16.60');
+            if($zk->connect()){
+                $zk->disableDevice();
+                $serialNumber = $zk->serialNumber();
+                $zk->enableDevice();
+            }
+        }catch (Exception $exception){
+            $errors[] = $exception->getMessage();
+        }
+
+        //$zk = new ZKTeco('192.168.16.60');//clock out
 //        $zk = new ZKTeco('192.168.100.100');//clock in
         $connections = $zk->connect();
         $enableDevice = $zk->enableDevice();
@@ -45,7 +58,7 @@ class debugLogic extends Command
         $serialNumber = $zk->serialNumber();
 //        $testVoice = $zk->testVoice();
         $users = $zk->getUser();
-        dump($serialNumber, $users);
+        dump($connections, $serialNumber, $users, $errors);
         $attendance = $zk->getAttendance();
 //        $attendance = (new \App\Models\Attendance)->getAttendance($zk);
         dd($attendance);
