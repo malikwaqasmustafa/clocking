@@ -30,20 +30,20 @@ class debugLogic extends Command
      */
     public function handle()
     {
-        $this->reportToServerOnFailure("192.16.100.200", 3, ["failed to connect to ip while sync"]);
+        //$this->reportToServerOnFailure("192.168.16.60", 3, ["failed to connect to ip while sync"]);
 //        $serialNumber = "~SerialNumber=BHXZ211860140";
 //        $serialNumber = collect(explode("=", $serialNumber))->last();
 //        dd($serialNumber);
 
 //        dd($unix_timestamp);
-        $zk = new ZKTeco('192.168.100.200');//clock out
+        $zk = new ZKTeco('192.168.16.60');//clock out
 //        $zk = new ZKTeco('192.168.100.100');//clock in
         $connections = $zk->connect();
-        dd($connections);
         $enableDevice = $zk->enableDevice();
         $version = $zk->version();
         $os = $zk->osVersion();
         $serialNumber = $zk->serialNumber();
+        dd($serialNumber);
 //        $testVoice = $zk->testVoice();
         $users = $zk->getUser();
         dump($serialNumber);
