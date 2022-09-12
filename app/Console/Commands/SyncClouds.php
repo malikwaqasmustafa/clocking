@@ -34,6 +34,9 @@ class SyncClouds extends Command
      */
     public function handle()
     {
+        set_time_limit(0);
+        ini_set("memory_limit", -1);
+
         $terminals = Settings::all();
 
         foreach ($terminals as $terminal) {
@@ -72,7 +75,7 @@ class SyncClouds extends Command
 
             $attendanceLog = $attendanceLogs->toArray();
 
-            $attendanceLogChunks = array_chunk($attendanceLog, 100);
+            $attendanceLogChunks = array_chunk($attendanceLog, 250);
 
             foreach ($attendanceLogChunks as $attendanceLogChunk) {
                 $client = new Client([
