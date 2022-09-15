@@ -45,6 +45,11 @@ class SyncClouds extends Command
             $endpoint = $terminal->api_url;
             $serialNumber = $terminal->serial_number;
 
+            if(empty($serialNumber)){
+                $this->info("serial number can't be null");
+                break;
+            }
+
             $this->info("device ip : {$deviceIp}");
             $this->info("serial Number : {$serialNumber}");
             $this->info("EndPoint : {$endpoint}");

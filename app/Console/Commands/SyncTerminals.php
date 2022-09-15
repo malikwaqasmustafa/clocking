@@ -69,6 +69,8 @@ class SyncTerminals extends Command
 
                 if (empty($serialNumber)){
                     $errors[] = "unable to connect to machine on this IP: ".$deviceIp;
+                    $this->info("Machine must have a serial number fetched.");
+                    break;
                 }
 
                 if (!empty($errors)){

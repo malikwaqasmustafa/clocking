@@ -64,7 +64,7 @@ class TerminalController extends Controller
                     "api_url"      => 'https://jawa.linksdev.co.uk/api/v2/storeClocking',
                     "company_id"   => 3,
                     "device_model" => $validated['device_model'],
-                    "serial_number" => ''//$serialNumber
+                    "serial_number" => $serialNumber
                 ]);
 
                 if ($setting instanceof Settings) {
@@ -144,7 +144,7 @@ class TerminalController extends Controller
                     }
 
                     $update['device_ip'] = $input['device_ip'];
-                    $update['serial_number'] = '';//$serialNumber;
+                    $update['serial_number'] = $serialNumber;
                 }
 
                 if (!empty($input['device_model'])) {
