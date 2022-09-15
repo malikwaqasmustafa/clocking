@@ -63,9 +63,11 @@ class SyncTerminals extends Command
                         $zk->enableDevice();
                     }
                 }catch (Exception $exception){
+                    $this->info($exception->getMessage());
                     $errors[] = $exception->getMessage();
                 }
 
+                $this->info("Serial Number : {$serialNumber}");
 
                 if (empty($serialNumber)){
                     $errors[] = "unable to connect to machine on this IP: ".$deviceIp;
