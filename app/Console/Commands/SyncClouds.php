@@ -116,6 +116,10 @@ class SyncClouds extends Command
                             "serial_number" => $serialNumber
                         ]);
                     }
+
+                    $this->info(" Sleeping Cron service to avoid ip ban from server ...");
+                    sleep(5);
+
                 } catch (GuzzleException $e) {
                     Log::error($e->getMessage());
                     $this->info("exception Occurred : ...........");
