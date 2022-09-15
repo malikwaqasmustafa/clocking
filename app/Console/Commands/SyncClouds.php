@@ -109,7 +109,7 @@ class SyncClouds extends Command
                         $lastEntry = collect($attendanceLogChunk)->last();
                         $createdAt = date("Y-m-d H:i:s", strtotime($lastEntry['created_at']));
 
-                        $this->info("Sync History Created: ".$lastEntry);
+                        $this->info("Sync History Created: ".$lastEntry['created_at']);
 
                         SyncHistory::create([
                             "date"          => $createdAt,
