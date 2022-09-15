@@ -46,6 +46,9 @@ class SyncClouds extends Command
             $serialNumber = $terminal->serial_number;
 
             $this->info("device ip : {$deviceIp}");
+            $this->info("serial Number : {$serialNumber}");
+            $this->info("EndPoint : {$endpoint}");
+            $this->info("Company Id : {$companyId}");
 
             $syncHistory = SyncHistory::where('serial_number', $serialNumber)->orderBy('id', 'desc')->first();
 
@@ -53,6 +56,9 @@ class SyncClouds extends Command
                 $attendanceLogs = ClockingRecord::all();
             } else {
                 $lastSync = date("Y-m-d H:i:s", strtotime($syncHistory->date));
+
+                $this->info("Last Sync Time was: ".$lastSync);
+
                 $attendanceLogs = ClockingRecord::select(
                     'clocking_in',
                     'clocking_out',
@@ -71,13 +77,18 @@ class SyncClouds extends Command
                             ->orWhere('break_in', '>=', $lastSync)
                             ->orWhere('break_out', '>=', $lastSync);
                     })->get();
+
+                $this->info("records needs to go Live : ". $attendanceLogs->count());
             }
 
             $attendanceLog = $attendanceLogs->toArray();
 
-            $attendanceLogChunks = array_chunk($attendanceLog, 250);
+            $attendanceLogChunks = array_chunk($attendanceLog, 50);
 
             foreach ($attendanceLogChunks as $attendanceLogChunk) {
+
+                $this->info("preparing Batch of 50 Entries to Push...");
+
                 $client = new Client([
                     'headers' => ['Content-Type' => 'application/json']
                 ]);
@@ -91,11 +102,14 @@ class SyncClouds extends Command
 
                     $responseCode = $response->getStatusCode();
                     if ($responseCode !== 200) {
+                        $this->info("Failed to establish the connection with server.");
                         Log::error("Failed to push records on Server");
                     } else {
                         // If successfully pushed get the last entry
                         $lastEntry = collect($attendanceLogChunk)->last();
                         $createdAt = date("Y-m-d H:i:s", strtotime($lastEntry['created_at']));
+
+                        $this->info("Sync History Created: ".$lastEntry);
 
                         SyncHistory::create([
                             "date"          => $createdAt,
@@ -104,7 +118,11 @@ class SyncClouds extends Command
                     }
                 } catch (GuzzleException $e) {
                     Log::error($e->getMessage());
+                    $this->info("exception Occurred : ...........");
+                    $this->info($e->getMessage());
                 } catch (JsonException $e) {
+                    $this->info("exception Occurred : ...........");
+                    $this->info($e->getMessage());
                     Log::error($e->getMessage());
                 }
             }
