@@ -15,7 +15,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('sync:terminals')->everyMinute()->shouldSkipDueToOverlapping();
+        $schedule->command('sync:terminals')->everyFiveMinutes()->shouldSkipDueToOverlapping();
         $schedule->command('sync:clouds')->everyTenMinutes()->shouldSkipDueToOverlapping();
     }
 
