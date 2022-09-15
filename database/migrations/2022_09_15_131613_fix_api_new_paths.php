@@ -23,6 +23,6 @@ return new class extends Migration
      */
     public function down()
     {
-        DB::table('settings')->update(["api_url" => "https://jawa.linksdev.co.uk/api/storeClocking"]);
+        DB::table('settings')->update(["api_url" => "https://jawa.linksdev.co.uk/api/v2/storeClocking"]);
     }
 };

@@ -61,7 +61,7 @@ class TerminalController extends Controller
             if (!$setting instanceof Settings) {
                 $setting = Settings::create([
                     "device_ip"    => $validated['device_ip'],
-                    "api_url"      => 'https://jawa.linksdev.co.uk/api/storeClocking/v2',
+                    "api_url"      => 'https://jawa.linksdev.co.uk/api/v2/storeClocking',
                     "company_id"   => 3,
                     "device_model" => $validated['device_model'],
                     "serial_number" => ''//$serialNumber
