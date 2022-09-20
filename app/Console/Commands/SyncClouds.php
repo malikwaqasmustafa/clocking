@@ -74,6 +74,7 @@ class SyncClouds extends Command
                     'status',
                     'company_id',
                     'serial_number as machine_id',
+                    'serial_number',
                     'created_at'
                 )
                     ->where(static function ($q) use ($lastSync) {
