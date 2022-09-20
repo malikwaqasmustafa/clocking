@@ -23,7 +23,8 @@ class Settings extends Model
         'device_ip',
         'api_url',
         'company_id',
-        'device_model'
+        'device_model',
+        'serial_number'
     ];
 
     /**
@@ -44,5 +45,18 @@ class Settings extends Model
         }catch (Exception $exception){
             return "Disconnected";
         }
+    }
+
+    /**
+     * @param  string  $serialNumber
+     * @return string
+     */
+    public static function getCleanSerialNumber($serialNumber): string
+    {
+        return preg_replace(
+            '/[[:cntrl:]]/',
+            '',
+            collect(explode("=", $serialNumber))->last()
+        );
     }
 }

@@ -59,15 +59,14 @@ class SyncTerminals extends Command
                     $zk = new ZKTeco($deviceIp);
                     if($zk->connect()){
                         $zk->disableDevice();
-                        $serialNumber = $zk->serialNumber();
+                        $serialNumber = stripslashes($zk->serialNumber());
+                        $serialNumber = Settings::getCleanSerialNumber($serialNumber);
                         $zk->enableDevice();
                     }
                 }catch (Exception $exception){
                     $this->info($exception->getMessage());
                     $errors[] = $exception->getMessage();
                 }
-
-                $this->info("Serial Number : {$serialNumber}");
 
                 if (empty($serialNumber)){
                     $errors[] = "unable to connect to machine on this IP: ".$deviceIp;
@@ -80,7 +79,6 @@ class SyncTerminals extends Command
                     continue;
                 }
 
-                $serialNumber = collect(explode("=", $serialNumber))->last();
                 /*
                  * Clocking Machine types
                     clock in 	= 0
@@ -143,7 +141,7 @@ class SyncTerminals extends Command
              * We can now safely clear this terminal's entries because we have written this in our local database
              *
              * Which additionally gets backed up to the Cloud Services Periodically
-            */
+             */
 
             DB::commit();
 

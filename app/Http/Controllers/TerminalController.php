@@ -37,12 +37,13 @@ class TerminalController extends Controller
             /**
              * Verify the connection with machine if it's pingable or not if yes fetch the serial number
              * and update it in the settings table along with this new terminal creation
-            */
+             */
             try {
                 $zk = new ZKTeco($validated['device_ip']);
                 if($zk->connect()){
                     $zk->disableDevice();
-                    $serialNumber = $zk->serialNumber();
+                    $serialNumber = stripslashes($zk->serialNumber());
+                    $serialNumber = Settings::getCleanSerialNumber($serialNumber);
                     $zk->enableDevice();
                 }
             }catch (Exception $exception){
@@ -129,7 +130,8 @@ class TerminalController extends Controller
                         $zk = new ZKTeco($validated['device_ip']);
                         if($zk->connect()){
                             $zk->disableDevice();
-                            $serialNumber = $zk->serialNumber();
+                            $serialNumber = stripslashes($zk->serialNumber());
+                            $serialNumber = Settings::getCleanSerialNumber($serialNumber);
                             $zk->enableDevice();
                         }
                     }catch (Exception $exception){

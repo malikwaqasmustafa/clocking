@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Models\Attendance;
+use App\Models\Settings;
 use GuzzleHttp\Client;
 use Illuminate\Console\Command;
 use maliklibs\Zkteco\Lib\ZKTeco;
@@ -32,6 +33,17 @@ class debugLogic extends Command
      */
     public function handle()
     {
+        ini_set('display_errors', 1);
+        ini_set('display_startup_errors', 1);
+        error_reporting(E_ALL);
+
+        $string = "BHXZ211860007\x00";
+        $a = preg_replace('/[[:cntrl:]]/', '', $string);
+
+        dd($a);
+        //$string = rtrim(iconv('ASCII', 'UTF-8//IGNORE', $string), "\\");
+        $this->info($string);
+        dd(123);
         //$this->reportToServerOnFailure("192.168.16.60", 3, ["failed to connect to ip while sync"]);
 //        $serialNumber = "~SerialNumber=BHXZ211860140";
 //        $serialNumber = collect(explode("=", $serialNumber))->last();
