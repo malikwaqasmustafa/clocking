@@ -119,14 +119,14 @@ class SyncClouds extends Command
 
 
                         $last_entry_sync_date = "";
-                        if(!empty($lastEntry->get('clocking_in'))){
-                            $last_entry_sync_date = $lastEntry->get('clocking_in');
-                        }elseif (!empty($lastEntry->get('clocking_out'))) {
-                            $last_entry_sync_date = $lastEntry->get('clocking_out');
-                        }elseif (!empty($lastEntry->get('break_in'))){
-                            $last_entry_sync_date = $lastEntry->get('break_in');
-                        }elseif (!empty($lastEntry->get('break_out'))){
-                            $last_entry_sync_date = $lastEntry->get('break_out');
+                        if(!empty($lastEntry['clocking_in'])){
+                            $last_entry_sync_date = $lastEntry['clocking_in'];
+                        }elseif (!empty($lastEntry['clocking_in'])) {
+                            $last_entry_sync_date = $lastEntry['clocking_in'];
+                        }elseif (!empty($lastEntry['clocking_in'])){
+                            $last_entry_sync_date = $lastEntry['clocking_in'];
+                        }elseif (!empty($lastEntry['clocking_in'])){
+                            $last_entry_sync_date = $lastEntry['clocking_in'];
                         }
 
                         SyncHistory::create([
