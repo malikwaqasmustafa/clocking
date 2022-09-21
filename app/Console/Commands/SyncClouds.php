@@ -89,8 +89,6 @@ class SyncClouds extends Command
 
             $attendanceLog = $attendanceLogs->toArray();
 
-            dd($attendanceLog);
-
             $attendanceLogChunks = array_chunk($attendanceLog, 50);
 
             foreach ($attendanceLogChunks as $attendanceLogChunk) {
