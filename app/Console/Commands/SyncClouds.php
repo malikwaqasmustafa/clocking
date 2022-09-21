@@ -60,7 +60,7 @@ class SyncClouds extends Command
             if (is_null($syncHistory)) {
                 $attendanceLogs = ClockingRecord::all();
             } else {
-                $lastSync = "2021-01-01 00:00:01";
+                $lastSync = date("Y-m-d H:i:s", strtotime($syncHistory->date));
 
                 $this->info("Last Sync Time was: ".$lastSync);
 
@@ -88,6 +88,8 @@ class SyncClouds extends Command
             }
 
             $attendanceLog = $attendanceLogs->toArray();
+
+            dd($attendanceLog);
 
             $attendanceLogChunks = array_chunk($attendanceLog, 50);
 
