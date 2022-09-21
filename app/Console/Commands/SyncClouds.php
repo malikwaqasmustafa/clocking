@@ -113,7 +113,6 @@ class SyncClouds extends Command
                     } else {
                         // If successfully pushed get the last entry
                         $lastEntry = collect($attendanceLogChunk)->last();
-                        $createdAt = date("Y-m-d H:i:s", strtotime($lastEntry['created_at']));
 
                         $this->info("Sync History Created: ".$lastEntry['created_at']);
 
@@ -121,12 +120,19 @@ class SyncClouds extends Command
                         $last_entry_sync_date = "";
                         if(!empty($lastEntry['clocking_in'])){
                             $last_entry_sync_date = $lastEntry['clocking_in'];
-                        }elseif (!empty($lastEntry['clocking_in'])) {
-                            $last_entry_sync_date = $lastEntry['clocking_in'];
-                        }elseif (!empty($lastEntry['clocking_in'])){
-                            $last_entry_sync_date = $lastEntry['clocking_in'];
-                        }elseif (!empty($lastEntry['clocking_in'])){
-                            $last_entry_sync_date = $lastEntry['clocking_in'];
+                        }
+
+                        if (!empty($lastEntry['clocking_out'])) {
+                            $last_entry_sync_date = $lastEntry['clocking_out'];
+                        }
+
+
+                        if (!empty($lastEntry['break_in'])){
+                            $last_entry_sync_date = $lastEntry['break_in'];
+                        }
+
+                        if (!empty($lastEntry['break_out'])){
+                            $last_entry_sync_date = $lastEntry['break_out'];
                         }
 
                         SyncHistory::create([
@@ -135,7 +141,7 @@ class SyncClouds extends Command
                         ]);
                     }
 
-                    $this->info(" Sleeping Cron service to avoid ip ban from server ...");
+                    $this->info(" Sleeping Cron service ...");
                     sleep(5);
 
                 } catch (GuzzleException $e) {
