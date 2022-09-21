@@ -60,7 +60,7 @@ class SyncClouds extends Command
             if (is_null($syncHistory)) {
                 $attendanceLogs = ClockingRecord::all();
             } else {
-                $lastSync = date("Y-m-d H:i:s", strtotime($syncHistory->date));
+                $lastSync = "2021-01-01 00:00:01";
 
                 $this->info("Last Sync Time was: ".$lastSync);
 
@@ -117,8 +117,20 @@ class SyncClouds extends Command
 
                         $this->info("Sync History Created: ".$lastEntry['created_at']);
 
+
+                        $last_entry_sync_date = "";
+                        if(!empty($lastEntry->get('clocking_in'))){
+                            $last_entry_sync_date = $lastEntry->get('clocking_in');
+                        }elseif (!empty($lastEntry->get('clocking_out'))) {
+                            $last_entry_sync_date = $lastEntry->get('clocking_out');
+                        }elseif (!empty($lastEntry->get('break_in'))){
+                            $last_entry_sync_date = $lastEntry->get('break_in');
+                        }elseif (!empty($lastEntry->get('break_out'))){
+                            $last_entry_sync_date = $lastEntry->get('break_out');
+                        }
+
                         SyncHistory::create([
-                            "date"          => $createdAt,
+                            "date"          => date("Y-m-d H:i:s", strtotime($last_entry_sync_date)),
                             "serial_number" => $serialNumber
                         ]);
                     }
