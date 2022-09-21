@@ -129,6 +129,8 @@ class SyncClouds extends Command
                             $last_entry_sync_date = $lastEntry['clocking_in'];
                         }
 
+                        dd($last_entry_sync_date);
+
                         SyncHistory::create([
                             "date"          => date("Y-m-d H:i:s", strtotime($last_entry_sync_date)),
                             "serial_number" => $serialNumber
