@@ -55,8 +55,8 @@ class SyncTerminals extends Command
                 $this->info("device ip : {$deviceIp}");
 
                 $serialNumber = null;
+                $zk = new ZKTeco($deviceIp);
                 try {
-                    $zk = new ZKTeco($deviceIp);
                     if($zk->connect()){
                         $zk->disableDevice();
                         $serialNumber = stripslashes($zk->serialNumber());
@@ -71,6 +71,7 @@ class SyncTerminals extends Command
                 if (empty($serialNumber)){
                     $errors[] = "unable to connect to machine on this IP: ".$deviceIp;
                     $this->info("Machine must have a serial number fetched.");
+                    $this->reportToServerOnFailure($deviceIp, $companyId, $errors);
                     break;
                 }
 
@@ -87,50 +88,47 @@ class SyncTerminals extends Command
                     break in 	= 3
                  */
 
-                if(!empty($serialNumber)){
-                    $users = $zk->getUser();
-                    $attendances = $zk->getAttendance();
+                $users = $zk->getUser();
+                $attendances = $zk->getAttendance();
 
-                    foreach ($attendances as $attendance){
-                        $attendance = collect($attendance);
+                foreach ($attendances as $attendance){
+                    $attendance = collect($attendance);
 
-                        $clockIn = "";
-                        $clockOut = "";
-                        $breakIn = "";
-                        $breakOut = "";
+                    $clockIn = "";
+                    $clockOut = "";
+                    $breakIn = "";
+                    $breakOut = "";
 
-                        switch ($attendance->get('type')) {
-                            case 0:
-                                $clockIn = $attendance->get('timestamp');
-                                break;
-                            case 1:
-                                $clockOut = $attendance->get('timestamp');
-                                break;
-                            case 2:
-                                $breakOut = $attendance->get('timestamp');
-                                break;
-                            case 3:
-                                $breakIn = $attendance->get('timestamp');
-                                break;
+                    $type = (int) $attendance->get('type');
+                    switch ($type) {
+                        case 1:
+                            $clockOut = $attendance->get('timestamp');
+                            break;
+                        case 2:
+                            $breakOut = $attendance->get('timestamp');
+                            break;
+                        case 3:
+                            $breakIn = $attendance->get('timestamp');
+                            break;
 
-                            default:
-                                break;
-                        }
-
-                        $storeAttendance = [
-                            "UID" => $attendance->get('id'),
-                            "name" => !empty($users[$attendance->get('id')]['name']) ? $users[$attendance->get('id')]['name'] : NULL,
-                            "clocking_in" => $clockIn,
-                            "clocking_out" => $clockOut,
-                            "break_in" => $breakIn,
-                            "break_out" => $breakOut,
-                            "status" => $attendance->get('type'),
-                            "company_id" => $companyId,
-                            "serial_number" => $serialNumber
-                        ];
-
-                        ClockingRecord::query()->create($storeAttendance);
+                        default:
+                            $clockIn = $attendance->get('timestamp');
+                            break;
                     }
+
+                    $storeAttendance = [
+                        "UID" => $attendance->get('id'),
+                        "name" => !empty($users[$attendance->get('id')]['name']) ? $users[$attendance->get('id')]['name'] : NULL,
+                        "clocking_in" => $clockIn,
+                        "clocking_out" => $clockOut,
+                        "break_in" => $breakIn,
+                        "break_out" => $breakOut,
+                        "status" => $attendance->get('type'),
+                        "company_id" => $companyId,
+                        "serial_number" => $serialNumber
+                    ];
+
+                    ClockingRecord::query()->create($storeAttendance);
                 }
 
                 $zk->enableDevice();
