@@ -32,24 +32,22 @@
 </style>
 <section class="mainMenu">
     <ul>
+        <li class="{{ (\Request::route()->getName() == 'terminal.add') ? 'active' : '' }} proceed_to_orders_link">
+            <a href="{{ route('terminal.add') }}">Add New Terminal</a>
+        </li>
         <li class="{{ (\Request::route()->getName() == 'terminal.add') ? 'active' : '' }}">
             <a href="{{ route('terminal.add') }}">
                 Add Terminal
             </a>
         </li>
-        <li class="{{ (\Request::route()->getName() == 'terminal.add') ? 'active' : '' }}">
-            <a href="{{ route('terminal.add') }}">
+        <li class="{{ (\Request::route()->getName() == 'force.sync') ? 'active' : '' }}">
+            <a href="{{ route('force.sync') }}">
                 Force Sync
             </a>
         </li>
-        <li class="{{ (\Request::route()->getName() == 'terminal.add') ? 'active' : '' }}">
-            <a href="{{ route('terminal.add') }}">
+        <li class="{{ (\Request::route()->getName() == 'database.backup') ? 'active' : '' }}">
+            <a href="{{ route('database.backup') }}">
                 Database Backup
-            </a>
-        </li>
-        <li class="{{ (\Request::route()->getName() == 'terminal.add') ? 'active' : '' }}">
-            <a href="{{ route('terminal.add') }}">
-                Machines Entries Cleanup
             </a>
         </li>
     </ul>
