@@ -37,6 +37,21 @@
                 Add Terminal
             </a>
         </li>
+        <li class="{{ (\Request::route()->getName() == 'terminal.add') ? 'active' : '' }}">
+            <a href="{{ route('terminal.add') }}">
+                Force Sync
+            </a>
+        </li>
+        <li class="{{ (\Request::route()->getName() == 'terminal.add') ? 'active' : '' }}">
+            <a href="{{ route('terminal.add') }}">
+                Database Backup
+            </a>
+        </li>
+        <li class="{{ (\Request::route()->getName() == 'terminal.add') ? 'active' : '' }}">
+            <a href="{{ route('terminal.add') }}">
+                Machines Entries Cleanup
+            </a>
+        </li>
     </ul>
 </section>
 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">

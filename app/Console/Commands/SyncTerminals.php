@@ -20,7 +20,7 @@ class SyncTerminals extends Command
      *
      * @var string
      */
-    protected $signature = 'sync:terminals';
+    protected $signature = 'sync:terminals {--cleanup : cleans the entries after saving}';
 
     /**
      * The console command description.
@@ -36,6 +36,12 @@ class SyncTerminals extends Command
      */
     public function handle()
     {
+        $cleanup = false;
+        if ($this->option('cleanup')) {
+            $cleanup = true;
+            $this->info('Continue with clean up flag option enabled...');
+        }
+
         set_time_limit(0);
         ini_set("memory_limit", -1);
 
@@ -131,6 +137,13 @@ class SyncTerminals extends Command
                     ClockingRecord::query()->create($storeAttendance);
                 }
 
+                /**
+                 * If clean up flag is enabled then it will run the cron with force clean up options
+                 */
+                if ($cleanup){
+                    $zk->clearAttendance();
+                }
+
                 $zk->enableDevice();
             }
 
@@ -142,8 +155,6 @@ class SyncTerminals extends Command
              */
 
             DB::commit();
-
-            //$zk->clearAttendance();
             // all good
         } catch (\Exception $e) {
             DB::rollback();

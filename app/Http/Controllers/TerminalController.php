@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Settings;
+use App\Models\SyncHistory;
+use Hamcrest\Core\Set;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -169,6 +171,28 @@ class TerminalController extends Controller
         return response()->json(["status"  => "failed",
                                  "message" => "Something went wrong please try again by refreshing the page or contact support"
         ]);
+    }
+
+    public function loadForceSync(){
+        $settings = Settings::all();
+        return view('force-sync', compact('settings'));
+    }
+
+    public function forceSync(Request $request) {
+
+        $validated = $request->validate([
+            'force_sync_date'    => 'required'
+        ]);
+
+        if (!empty($validated)) {
+
+            SyncHistory::create([
+                "date"          => date("Y-m-d H:i:s", strtotime($validated['force_sync_date'])),
+                "serial_number" => $serialNumber
+            ]);
+        }
+
+        return response()->json(["status" => "failed", "message" => "Failed to add "]);
     }
 
 }
