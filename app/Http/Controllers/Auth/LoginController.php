@@ -63,7 +63,8 @@ class LoginController extends Controller
 
         if (!empty($validated)) {
             $client = new Client();
-            $response = $client->request('POST', 'https://prerelease.care-vision.co.uk/api/login', [
+            $loginUrl = config('server.login_url');
+            $response = $client->request('POST', $loginUrl, [
                 'form_params' => [
                     'userName' => $validated['username'],
                     'password' => $validated['password'],
@@ -78,7 +79,7 @@ class LoginController extends Controller
                     $verifiedUserDetails = collect($responseCollection->get('data'));
 
                     if ($verifiedUserDetails->get('id')) {
-                        Session::put('company_id', $verifiedUserDetails->get('id'));
+                        session(['company_id' => $verifiedUserDetails->get('id')]);
                         $user = User::updateOrCreate(['users.company_id' => $verifiedUserDetails->get('id')], [
                             'name'     => $verifiedUserDetails->get('name'),
                             'email'    => $verifiedUserDetails->get('email'),

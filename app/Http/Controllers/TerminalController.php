@@ -63,7 +63,7 @@ class TerminalController extends Controller
 
             // TODO fix company id from settings
             if (!$setting instanceof Settings) {
-                $company_id = Session::get('company_id');
+                $company_id = session('company_id', 8);
                 $setting = Settings::create([
                     "device_ip"     => $validated['device_ip'],
                     "api_url"       => 'https://prerelease.care-vision.co.uk/api/v2/storeClocking',
