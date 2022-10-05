@@ -27,4 +27,6 @@ Route::post('/store-terminal', [App\Http\Controllers\TerminalController::class, 
 Route::get('/edit-terminal/{id}', [App\Http\Controllers\TerminalController::class, 'edit'])->name('terminal.edit');
 Route::post('/edit-terminal', [App\Http\Controllers\TerminalController::class, 'update'])->name('terminal.update');
 Route::get('/load-terminals', [App\Http\Controllers\TerminalController::class, 'loadTerminals'])->name('terminal.load');
+Route::get('/force-sync', [App\Http\Controllers\TerminalController::class, 'loadForceSync'])->name('force.sync');
 Route::post('/force-sync-terminal', [App\Http\Controllers\TerminalController::class, 'forceSync'])->name('terminal.force.sync');
+Route::get('/database-backup', [App\Http\Controllers\TerminalController::class, 'databaseBackup'])->name('database.backup');

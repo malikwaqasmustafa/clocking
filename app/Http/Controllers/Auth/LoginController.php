@@ -63,7 +63,7 @@ class LoginController extends Controller
 
         if (!empty($validated)) {
             $client = new Client();
-            $response = $client->request('POST', 'https://jawa.linksdev.co.uk/api/login', [
+            $response = $client->request('POST', 'https://prerelease.care-vision.co.uk/api/login', [
                 'form_params' => [
                     'userName' => $validated['username'],
                     'password' => $validated['password'],

@@ -8,7 +8,7 @@
                     </a>
                 </div>
                 <ul class="headerNav list-unstyled">
-                    <li class="{{ (\Request::route()->getName() == 'terminal.add') ? 'active' : '' }} proceed_to_orders_link">
+                    <li class="{{ (\Request::route()->getName() == 'terminal.add' || \Request::route()->getName() == 'home') ? 'active' : '' }} proceed_to_orders_link">
                         <a href="{{ route('terminal.add') }}">Add New Terminal</a>
                     </li>
                     <li class="{{ (\Request::route()->getName() == 'force.sync') ? 'active' : '' }}">
