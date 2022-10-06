@@ -5,7 +5,7 @@ namespace App\Console\Commands;
 use App\Models\SyncHistory;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Console\Command;
-use Illuminate\Http\File;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 use GuzzleHttp\Client;
 
