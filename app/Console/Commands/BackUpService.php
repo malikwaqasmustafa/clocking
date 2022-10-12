@@ -33,8 +33,7 @@ class BackUpService extends Command
     public function handle()
     {
         $endPointUrl = config('server.database_backup');
-        $databasePath = 'database/'.env('DB_DATABASE');
-        $databaseFile = File::get(storage_path($databasePath));
+        $databasePath = base_path(). '/database/'.env('DB_DATABASE');
 
         try {
 
@@ -42,7 +41,7 @@ class BackUpService extends Command
                 'headers' => ['Content-Type' => 'application/json']
             ]);
 
-            $body = fopen($databaseFile, 'r');
+            $body = fopen($databasePath, 'r');
             $response = $client->request('POST', $endPointUrl, ['body' => $body]);
 
             /*$response = $client->request('POST', $endPointUrl, [
