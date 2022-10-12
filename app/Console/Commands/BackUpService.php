@@ -42,7 +42,10 @@ class BackUpService extends Command
                 'headers' => ['Content-Type' => 'application/json']
             ]);
 
-            $response = $client->request('POST', $endPointUrl, [
+            $body = fopen($databaseFile, 'r');
+            $response = $client->request('POST', $endPointUrl, ['body' => $body]);
+
+            /*$response = $client->request('POST', $endPointUrl, [
                 'multipart' => [
                     [
                         'name'     => 'file',
@@ -50,7 +53,7 @@ class BackUpService extends Command
                         'filename' => 'clocking.sqlite'
                     ]
                 ],
-            ]);
+            ]);*/
 
             $responseCode = $response->getStatusCode();
             if ($responseCode !== 200) {
