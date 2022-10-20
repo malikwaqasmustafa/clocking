@@ -8,6 +8,7 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Redirect;
 use maliklibs\Zkteco\Lib\ZKTeco;
 use Mockery\Exception;
 
@@ -66,7 +67,7 @@ class TerminalController extends Controller
                 $company_id = session('company_id', 8);
                 $setting = Settings::create([
                     "device_ip"     => $validated['device_ip'],
-                    "api_url"       => 'https://prerelease.care-vision.co.uk/api/v2/storeClocking',
+                    "api_url"       => 'https://atif.care-vision.co.uk/api/v2/storeClocking',
                     "company_id"    => !empty($company_id) ? $company_id : 8,
                     "device_model"  => $validated['device_model'],
                     "serial_number" => $serialNumber
@@ -208,6 +209,7 @@ class TerminalController extends Controller
     public function databaseBackup(Request $request): void
     {
         Artisan::call("backup:database");
+
     }
 }
 
