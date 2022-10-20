@@ -6,6 +6,7 @@ use App\Models\Settings;
 use App\Models\SyncHistory;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Redirect;
@@ -205,12 +206,12 @@ class TerminalController extends Controller
 
     /**
      * @param  Request  $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
-    public function databaseBackup(Request $request)
+    public function databaseBackup(Request $request): RedirectResponse
     {
         Artisan::call("backup:database");
-        return redirect()->route('/');
+        return redirect()->route('home');
     }
 }
 
