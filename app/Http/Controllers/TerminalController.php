@@ -205,11 +205,12 @@ class TerminalController extends Controller
 
     /**
      * @param  Request  $request
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function databaseBackup(Request $request): void
+    public function databaseBackup(Request $request)
     {
         Artisan::call("backup:database");
-
+        return redirect()->route('/');
     }
 }
 
