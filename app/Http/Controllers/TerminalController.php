@@ -192,9 +192,9 @@ class TerminalController extends Controller
         if (!empty($validated)) {
             $machine = Settings::find($validated['machine']);
             SyncHistory::create([
-                "date"          => date("Y-m-d H:i:s", strtotime($validated['force_sync_date'])),
-                "created_at"    => date("Y-m-d H:i:s", strtotime($validated['force_sync_date'])),
-                "update_at"     => date("Y-m-d H:i:s", strtotime($validated['force_sync_date'])),
+                "date"          => date("Y-m-d 00:00:01", strtotime($validated['force_sync_date'])),
+                "created_at"    => date("Y-m-d 00:00:01", strtotime($validated['force_sync_date'])),
+                "update_at"     => date("Y-m-d 00:00:01", strtotime($validated['force_sync_date'])),
                 "serial_number" => $machine->serial_number
             ]);
 
