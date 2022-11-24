@@ -197,7 +197,8 @@ class TerminalController extends Controller
                 "update_at"     => date("Y-m-d 00:00:01", strtotime($validated['force_sync_date'])),
                 "serial_number" => $machine->serial_number
             ]);
-
+            Artisan::call("sync:terminals");
+            Artisan::call("sync:clouds");
             return response()->json(["status" => "success", "message" => "Force Re-sync added successfully!"]);
         }
 
